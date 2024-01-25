@@ -14,5 +14,5 @@ app.use(express.json(), cors())
 app.use(projetoRotas, usuarioRotas)
 
 app.listen(porta, function () {
-    console.log(`Servidor rodando na porta ${porta}!🚀`)
+    console.log(`Servidor rodando em ${url}!🚀`)
 })
