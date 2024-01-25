@@ -4,8 +4,8 @@ export interface IUsuario {
     sobrenome: string
     email: string
     senha: string
-    foto?: string
-    nacionalidade?: string
+    foto?: string | null
+    nacionalidade?: string | null
 
     // TODO Agurdando a implementação do modulo de produtos
     // projetos: IProjeto[]
