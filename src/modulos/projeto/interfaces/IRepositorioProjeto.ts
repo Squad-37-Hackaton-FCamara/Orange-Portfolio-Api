@@ -1,0 +1,6 @@
+import { IProjeto } from './IProjeto'
+import { ICriarProjeto } from '../interfaces/ICriarProjeto'
+
+export interface IRepositorioProjeto {
+    criar(data: ICriarProjeto): Promise<IProjeto>
+}
