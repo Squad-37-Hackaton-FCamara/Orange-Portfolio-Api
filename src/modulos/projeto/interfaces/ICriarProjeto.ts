@@ -5,4 +5,6 @@ export interface ICriarProjeto {
     descricao: string
     foto: string
     usuario_id: string
+    req: any
+    res: any
 }
