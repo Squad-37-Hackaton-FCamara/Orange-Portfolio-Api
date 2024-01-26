@@ -3,6 +3,11 @@ import { IRepositorioProjeto } from '../interfaces/IRepositorioProjeto'
 import { IProjeto } from '../interfaces/IProjeto'
 import { ICriarProjeto } from '../interfaces/ICriarProjeto'
 import { AppError } from '../../../compartilhado/errors/AppError'
+import { Storage } from '@google-cloud/storage';
+import { processFileMiddleware } from '../../../compartilhado/infra/http/middlewares/salvarImagemMidleware';
+
+const storage = new Storage({ keyFilename: 'google-cloud-key.json' });
+const bucket = storage.bucket('upload-file-test-1');
 
 class RepositorioProjeto implements IRepositorioProjeto {
     public async criar({
@@ -10,9 +15,37 @@ class RepositorioProjeto implements IRepositorioProjeto {
         tags,
         link,
         descricao,
-        foto,
-        usuario_id
+        usuario_id,
+        req,
+        res
     }: ICriarProjeto): Promise<IProjeto> {
+
+        await processFileMiddleware(req, res);
+
+        if (!req.file) {
+            throw new AppError('Por favor, selecione uma imagem!', 404);
+        }
+
+        const blob = bucket.file(req.file.originalname);
+
+        const blobStream = blob.createWriteStream({
+            resumable: false,
+        });
+
+        // Aguardar o término do upload
+        await new Promise<void>((resolve, reject) => {
+            blobStream.on('error', (err) => {
+                reject(new AppError(err.message, 500));
+            });
+
+            blobStream.on('finish', () => {
+                resolve();
+            });
+
+            blobStream.end(req.file.buffer);
+        });
+
+        const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
 
         const usuarioExistente = await prismaCliente.usuario.findFirst({
             where: { id: usuario_id }
@@ -36,7 +69,7 @@ class RepositorioProjeto implements IRepositorioProjeto {
                 tags,
                 link,
                 descricao,
-                foto,
+                foto: publicUrl,
                 usuario_id
             }
         })
