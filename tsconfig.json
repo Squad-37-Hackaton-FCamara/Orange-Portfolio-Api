@@ -7,6 +7,7 @@
         "module": "commonjs",
         "baseUrl": "./",
         "paths": {
+            "@config/*": ["src/config/*"],
             "@modulos/*": ["src/modulos/*"],
             "@compartilhados/*": ["src/compartilhados/*"]
         },
