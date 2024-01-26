@@ -1,3 +1,5 @@
+import { IProjeto } from "@modulos/projeto/interfaces/IProjeto"
+
 export interface IUsuario {
     id: string
     nome: string
@@ -6,7 +8,5 @@ export interface IUsuario {
     senha: string
     foto?: string | null
     nacionalidade?: string | null
-
-    // TODO Agurdando a implementação do modulo de produtos
-    // projetos: IProjeto[]
+    projetos?: IProjeto[]
 }
