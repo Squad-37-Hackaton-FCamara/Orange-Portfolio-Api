@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { RepositorioUsuario } from '../repositorios/repositorioUsuario'
+import { RepositorioUsuario } from '../repositorios/RepositorioUsuario'
 import { ServicoCriarUsuario } from '../servicos/ServicoCriarUsuario'
 
 class ControladorUsuario {
