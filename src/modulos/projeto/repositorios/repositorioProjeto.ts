@@ -5,6 +5,7 @@ import { ICriarProjeto } from '../interfaces/ICriarProjeto'
 import { AppError } from '../../../compartilhado/errors/AppError'
 import { Storage } from '@google-cloud/storage';
 import { processFileMiddleware } from '../../../compartilhado/infra/http/middlewares/salvarImagemMidleware';
+import { PrismaClient } from '@prisma/client'
 
 const storage = new Storage({ keyFilename: 'google-cloud-key.json' });
 const bucket = storage.bucket('upload-file-test-1');
@@ -75,6 +76,13 @@ class RepositorioProjeto implements IRepositorioProjeto {
         })
 
         return projeto
+    } 
+
+    public async listar(): Promise<IProjeto[] | null> {
+        const projetos = prismaCliente.projeto.findMany()
+
+        return projetos
+       
     }
 }
 

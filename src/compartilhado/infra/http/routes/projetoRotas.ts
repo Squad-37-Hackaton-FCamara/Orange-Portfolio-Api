@@ -3,7 +3,7 @@ import { ControladorProjeto } from '../../../../modulos/projeto/controladores/Co
 
 const projetoRotas = express()
 
-projetoRotas.get('/projeto')
+projetoRotas.get('/projeto', new ControladorProjeto().listar)
 projetoRotas.get('/projeto/:userId')
 projetoRotas.post('/projeto', new ControladorProjeto().criar)
 projetoRotas.put('/projeto')
