@@ -3,6 +3,8 @@ import { IRepositorioUsuario } from '../interfaces/IRepositorioUsuario'
 import { IUsuario } from '../interfaces/IUsuario'
 import { ServicoCriarUsuario } from './ServicoCriarUsuario'
 
+import { AppError } from '../../../compartilhado/errors/AppError'
+
 // Mock para o repositório de usuário
 class RepositorioUsuarioMock implements IRepositorioUsuario {
     private usuarios: IUsuario[] = []
@@ -14,8 +16,7 @@ class RepositorioUsuarioMock implements IRepositorioUsuario {
             : false
 
         if (usuarioExistente) {
-            // TODO Aguardando a implementação do tratamento de erros.
-            throw new Error('ususario já cadastrado!')
+            throw new AppError('ususario já cadastrado!', 401)
         }
 
         usuario = {
@@ -73,6 +74,6 @@ describe('ServicoCriarUsuario', () => {
                 email: 'usuario@teste.com',
                 senha: '654321'
             })
-        ).rejects.toBeInstanceOf(Error)
+        ).rejects.toBeInstanceOf(AppError)
     })
 })
