@@ -17,6 +17,9 @@ class ControladorProjeto {
             descricao,
             foto,
             usuario_id,
+            req,
+            res
+
         })
 
         return res.status(201).json(projeto)
