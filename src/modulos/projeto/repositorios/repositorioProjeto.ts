@@ -14,16 +14,11 @@ class RepositorioProjeto implements IRepositorioProjeto {
         tags,
         link,
         descricao,
-        usuario_id,
-        req,
-        res
+        foto,
+        usuario_id
     }: ICriarProjeto): Promise<IProjeto> {
 
-        if (!req.file) {
-            throw new AppError('Por favor, selecione uma imagem!', 404);
-        }
-
-        const uniqueFileName = `${usuario_id}_${Date.now()}_${req.file.originalname}`;
+        const uniqueFileName = `${usuario_id}_${Date.now()}_${foto?.originalname}`;
         const blob = bucket.file(uniqueFileName);
 
         const blobStream = blob.createWriteStream({
@@ -40,7 +35,7 @@ class RepositorioProjeto implements IRepositorioProjeto {
                 resolve();
             });
 
-            blobStream.end(req.file.buffer);
+            blobStream.end(foto?.buffer);
         });
 
         const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
@@ -80,14 +75,9 @@ class RepositorioProjeto implements IRepositorioProjeto {
         tags,
         link,
         descricao,
-        usuario_id,
-        req,
-        res
+        foto,
+        usuario_id
     }: ICriarProjeto): Promise<IProjeto> {
-
-        if (!req.file) {
-            throw new AppError('Por favor, selecione uma imagem!', 404);
-        }
 
         const projetoExistente = await prismaCliente.projeto.findUnique({
             where: {
@@ -110,7 +100,7 @@ class RepositorioProjeto implements IRepositorioProjeto {
         }
 
         // Fazer o upload da nova imagem
-        const uniqueFileName = `${usuario_id}_${Date.now()}_${req.file.originalname}`;
+        const uniqueFileName = `${usuario_id}_${Date.now()}_${foto?.originalname}`;
         const blob = bucket.file(uniqueFileName);
         const blobStream = blob.createWriteStream({
             resumable: false
@@ -125,7 +115,7 @@ class RepositorioProjeto implements IRepositorioProjeto {
                 resolve();
             });
 
-            blobStream.end(req.file.buffer);
+            blobStream.end(foto?.buffer);
         });
 
         const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
