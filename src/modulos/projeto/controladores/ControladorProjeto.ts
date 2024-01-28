@@ -8,7 +8,8 @@ import { ServicoExcluirProjeto } from '../servicos/ServicoExcluirProjeto'
 
 class ControladorProjeto {
     public async criar(req: Request, res: Response): Promise<Response> {
-        const { titulo, tags, link, descricao, foto, usuario_id } = req.body
+        const { titulo, tags, link, descricao, usuario_id } = req.body
+        const foto = req.file
 
         const servicoCriarProjeto = new ServicoCriarProjeto(
             new RepositorioProjeto()
@@ -20,10 +21,7 @@ class ControladorProjeto {
             link,
             descricao,
             foto,
-            usuario_id,
-            req,
-            res
-
+            usuario_id
         })
 
         return res.status(201).json(projeto)
@@ -42,7 +40,8 @@ class ControladorProjeto {
 
     public async editar(req: Request, res: Response): Promise<Response> {
         const { id } = req.params
-        const { titulo, tags, link, descricao, foto, usuario_id } = req.body
+        const { titulo, tags, link, descricao, usuario_id } = req.body
+        const foto = req.file
 
         const servicoEditarProjeto = new ServicoEditarProjeto(
             new RepositorioProjeto()
@@ -54,9 +53,7 @@ class ControladorProjeto {
             link,
             descricao,
             foto,
-            usuario_id,
-            req,
-            res
+            usuario_id
 
         })
 
@@ -81,7 +78,7 @@ class ControladorProjeto {
         const servicoExcluirProjeto = new ServicoExcluirProjeto(
             new RepositorioProjeto()
         )
-        
+
         const projeto = await servicoExcluirProjeto.executar(id)
 
         return res.status(200).json({mensagem: 'O projeto foi deletado com sucesso.'})
