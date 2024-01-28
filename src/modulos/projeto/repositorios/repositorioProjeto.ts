@@ -4,7 +4,6 @@ import { IProjeto } from '../interfaces/IProjeto'
 import { ICriarProjeto } from '../interfaces/ICriarProjeto'
 import { AppError } from '../../../compartilhado/errors/AppError'
 import { Storage } from '@google-cloud/storage';
-import { processFileMiddleware } from '../../../compartilhado/infra/http/middlewares/salvarImagemMidleware';
 
 const storage = new Storage({ keyFilename: 'google-cloud-key.json' });
 const bucket = storage.bucket('upload-file-test-1');
@@ -20,40 +19,35 @@ class RepositorioProjeto implements IRepositorioProjeto {
         res
     }: ICriarProjeto): Promise<IProjeto> {
 
-        await processFileMiddleware(req, res);
-
         if (!req.file) {
             throw new AppError('Por favor, selecione uma imagem!', 404);
         }
 
-        const blob = bucket.file(req.file.originalname);
+        const uniqueFileName = `${usuario_id}_${Date.now()}_${req.file.originalname}`;
+        const blob = bucket.file(uniqueFileName);
 
         const blobStream = blob.createWriteStream({
             resumable: false,
         });
 
-        // Aguardar o término do upload
-        // await new Promise<void>((resolve, reject) => {
-        //     blobStream.on('error', (err) => {
-        //         reject(new AppError(err.message, 500));
-        //     });
+       // Aguardar o término do upload
+        await new Promise<void>((resolve, reject) => {
+            blobStream.on('error', (err) => {
+                reject(new AppError(err.message, 500));
+            });
 
-        //     blobStream.on('finish', () => {
-        //         resolve();
-        //     });
+            blobStream.on('finish', () => {
+                resolve();
+            });
 
-        //     blobStream.end(req.file.buffer);
-        // });
+            blobStream.end(req.file.buffer);
+        });
 
         const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
-
-        // console.log(usuario_id, 'usuario_id')
 
         const usuarioExistente = await prismaCliente.usuario.findFirst({
             where: { id: usuario_id }
         })
-
-        // console.log(usuarioExistente, 'usuarioExistente')
 
         if (!usuarioExistente) {
             throw new AppError("Usuário não existe na base de dados.", 404)
@@ -62,8 +56,6 @@ class RepositorioProjeto implements IRepositorioProjeto {
         const linkExistente = await prismaCliente.projeto.findFirst({
             where: { link }
         })
-
-        console.log(linkExistente?.link, 'linkExistente')
 
         if (linkExistente?.link) {
             throw new AppError("Já existe um projeto com esse link na base de dados.", 409)
@@ -80,8 +72,6 @@ class RepositorioProjeto implements IRepositorioProjeto {
             }
         })
 
-        // console.log(projeto, 'projeto criado agora')
-
         return projeto
     }
 
@@ -94,8 +84,6 @@ class RepositorioProjeto implements IRepositorioProjeto {
         req,
         res
     }: ICriarProjeto): Promise<IProjeto> {
-
-        await processFileMiddleware(req, res);
 
         if (!req.file) {
             throw new AppError('Por favor, selecione uma imagem!', 404);
@@ -112,7 +100,7 @@ class RepositorioProjeto implements IRepositorioProjeto {
         }
 
         // Excluir a imagem antiga do GCS
-        const imagemAntiga = 'https://storage.googleapis.com/upload-file-test-1/download.jpeg';
+        const imagemAntiga = projetoExistente.foto;
         if (imagemAntiga) {
             const nomeArquivoAntigo = imagemAntiga.split('/').pop();
             if (nomeArquivoAntigo) {
@@ -122,7 +110,8 @@ class RepositorioProjeto implements IRepositorioProjeto {
         }
 
         // Fazer o upload da nova imagem
-        const blob = bucket.file(req.file.originalname);
+        const uniqueFileName = `${usuario_id}_${Date.now()}_${req.file.originalname}`;
+        const blob = bucket.file(uniqueFileName);
         const blobStream = blob.createWriteStream({
             resumable: false
         });
@@ -139,6 +128,8 @@ class RepositorioProjeto implements IRepositorioProjeto {
             blobStream.end(req.file.buffer);
         });
 
+        const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
+
         const projetoEditado = await prismaCliente.projeto.update({
             where: {
               id: String(id)
@@ -148,7 +139,7 @@ class RepositorioProjeto implements IRepositorioProjeto {
               tags,
               link,
               descricao,
-              foto: 'publicUrl',
+              foto: publicUrl,
               usuario_id
             }
           });
@@ -160,8 +151,8 @@ class RepositorioProjeto implements IRepositorioProjeto {
         const projetos = prismaCliente.projeto.findMany()
 
         return projetos
-
     }
+
 }
 
 export { RepositorioProjeto }
