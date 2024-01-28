@@ -153,6 +153,17 @@ class RepositorioProjeto implements IRepositorioProjeto {
         return projetos
     }
 
+    public async listarPeloUserId(usuario_id: String): Promise<IProjeto[] | null> {
+
+        const projetoUsuarioLogado = await prismaCliente.projeto.findMany({
+            where: {
+                usuario_id: String(usuario_id)
+            }
+        });
+
+        return projetoUsuarioLogado
+
+    }
 }
 
 export { RepositorioProjeto }
