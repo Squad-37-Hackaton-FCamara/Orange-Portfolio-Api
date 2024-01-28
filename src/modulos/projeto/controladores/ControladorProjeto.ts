@@ -3,6 +3,7 @@ import { RepositorioProjeto } from '../repositorios/repositorioProjeto'
 import { ServicoCriarProjeto } from '../servicos/ServicoCriarProjeto'
 import { ServicoListarProjeto } from '../servicos/ServicoListarProjeto'
 import { ServicoEditarProjeto } from '../servicos/ServicoEditarProjeto'
+import { ServicoListarPeloUserIdProjeto } from '../servicos/ServicoListarPeloUserIdProjeto'
 
 class ControladorProjeto {
     public async criar(req: Request, res: Response): Promise<Response> {
@@ -59,6 +60,18 @@ class ControladorProjeto {
         })
 
         return res.status(201).json(projeto)
+    }
+
+    public async listarPeloUserId(req: Request, res: Response): Promise<Response> {
+        const { usuario_id } = req.params
+
+        const servicoListarPeloUserIdProjeto = new ServicoListarPeloUserIdProjeto(
+            new RepositorioProjeto()
+        )
+
+        const projetos = await servicoListarPeloUserIdProjeto.executar(usuario_id)
+
+        return res.status(201).json(projetos)
     }
 }
 
