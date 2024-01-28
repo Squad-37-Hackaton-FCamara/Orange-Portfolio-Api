@@ -18,27 +18,32 @@ class RepositorioProjeto implements IRepositorioProjeto {
         usuario_id
     }: ICriarProjeto): Promise<IProjeto> {
 
-        const uniqueFileName = `${usuario_id}_${Date.now()}_${foto?.originalname}`;
-        const blob = bucket.file(uniqueFileName);
+        let publicUrl
 
-        const blobStream = blob.createWriteStream({
-            resumable: false,
-        });
+        if (foto && typeof foto === 'object') {
 
-       // Aguardar o término do upload
-        await new Promise<void>((resolve, reject) => {
-            blobStream.on('error', (err) => {
-                reject(new AppError(err.message, 500));
+            const uniqueFileName = `${usuario_id}_${Date.now()}_${foto?.originalname}`;
+            const blob = bucket.file(uniqueFileName);
+
+            const blobStream = blob.createWriteStream({
+                resumable: false,
             });
 
-            blobStream.on('finish', () => {
-                resolve();
+            // Aguardar o término do upload
+            await new Promise<void>((resolve, reject) => {
+                blobStream.on('error', (err) => {
+                    reject(new AppError(err.message, 500));
+                });
+
+                blobStream.on('finish', () => {
+                    resolve();
+                });
+
+                blobStream.end(foto?.buffer);
             });
 
-            blobStream.end(foto?.buffer);
-        });
-
-        const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
+            publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`
+        }
 
         const usuarioExistente = await prismaCliente.usuario.findUnique({
             where: { id: usuario_id }
@@ -62,7 +67,7 @@ class RepositorioProjeto implements IRepositorioProjeto {
                 tags,
                 link,
                 descricao,
-                foto: publicUrl,
+                foto: publicUrl as string,
                 usuario_id
             }
         })
@@ -99,26 +104,31 @@ class RepositorioProjeto implements IRepositorioProjeto {
             }
         }
 
-        // Fazer o upload da nova imagem
-        const uniqueFileName = `${usuario_id}_${Date.now()}_${foto?.originalname}`;
-        const blob = bucket.file(uniqueFileName);
-        const blobStream = blob.createWriteStream({
-            resumable: false
-        });
+        let publicUrl
 
-        await new Promise<void>((resolve, reject) => {
-            blobStream.on('error', (err) => {
-                reject(new AppError(err.message, 500));
+        if (foto && typeof foto === 'object') {
+
+            // Fazer o upload da nova imagem
+            const uniqueFileName = `${usuario_id}_${Date.now()}_${foto?.originalname}`;
+            const blob = bucket.file(uniqueFileName);
+            const blobStream = blob.createWriteStream({
+                resumable: false
             });
 
-            blobStream.on('finish', () => {
-                resolve();
+            await new Promise<void>((resolve, reject) => {
+                blobStream.on('error', (err) => {
+                    reject(new AppError(err.message, 500));
+                });
+
+                blobStream.on('finish', () => {
+                    resolve();
+                });
+
+                blobStream.end(foto?.buffer);
             });
 
-            blobStream.end(foto?.buffer);
-        });
-
-        const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
+            publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`
+        }
 
         const projetoEditado = await prismaCliente.projeto.update({
             where: {
