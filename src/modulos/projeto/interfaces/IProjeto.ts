@@ -4,6 +4,6 @@ export interface IProjeto {
     tags: string[]
     link: string
     descricao: string
-    foto: string
+    foto: string | Express.Multer.File | undefined
     usuario_id: string
 }
