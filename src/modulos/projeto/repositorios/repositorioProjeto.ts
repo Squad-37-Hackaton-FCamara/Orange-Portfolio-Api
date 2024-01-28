@@ -45,7 +45,7 @@ class RepositorioProjeto implements IRepositorioProjeto {
 
         const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
 
-        const usuarioExistente = await prismaCliente.usuario.findFirst({
+        const usuarioExistente = await prismaCliente.usuario.findUnique({
             where: { id: usuario_id }
         })
 
@@ -53,7 +53,7 @@ class RepositorioProjeto implements IRepositorioProjeto {
             throw new AppError("Usuário não existe na base de dados.", 404)
         }
 
-        const linkExistente = await prismaCliente.projeto.findFirst({
+        const linkExistente = await prismaCliente.projeto.findUnique({
             where: { link }
         })
 
@@ -163,6 +163,34 @@ class RepositorioProjeto implements IRepositorioProjeto {
 
         return projetoUsuarioLogado
 
+    }
+
+    public async excluir(id: String): Promise<void> {
+
+        const projetoExistente = await prismaCliente.projeto.findUnique({
+            where: {
+                id: String(id)
+            }
+        });
+
+        if (!projetoExistente) {
+            throw new AppError('O projeto informado não existe no banco de dados.', 404);
+        }
+
+        const imagemProjeto = projetoExistente.foto;
+        if (imagemProjeto) {
+            const nomeArquivo = imagemProjeto.split('/').pop();
+            if (nomeArquivo) {
+                const blobAntigo = bucket.file(nomeArquivo);
+                await blobAntigo.delete();
+            }
+        }
+
+        await prismaCliente.projeto.delete({
+            where: {
+              id: String(id)
+            }
+        });
     }
 }
 
