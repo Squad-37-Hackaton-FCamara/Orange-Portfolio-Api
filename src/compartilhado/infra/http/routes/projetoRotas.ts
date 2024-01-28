@@ -5,7 +5,7 @@ import { tratamentoImagemIntermediario } from '../middlewares/salvarImagemMidlew
 const projetoRotas = express()
 
 projetoRotas.get('/projeto', new ControladorProjeto().listar)
-projetoRotas.get('/projeto/:userId')
+projetoRotas.get('/projeto/:usuario_id', new ControladorProjeto().listarPeloUserId)
 projetoRotas.post('/projeto', tratamentoImagemIntermediario, new ControladorProjeto().criar)
 projetoRotas.put('/projeto/:id', tratamentoImagemIntermediario, new ControladorProjeto().editar)
 projetoRotas.delete('/projeto')
