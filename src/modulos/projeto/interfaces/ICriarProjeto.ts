@@ -3,8 +3,6 @@ export interface ICriarProjeto {
     tags: string[]
     link: string
     descricao: string
-    foto: string
+    foto: Express.Multer.File | undefined
     usuario_id: string
-    req: any
-    res: any
 }
