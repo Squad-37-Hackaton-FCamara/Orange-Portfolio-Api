@@ -1,0 +1,348 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Orange Portifólio",
+        "description": "",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/cadastro": {
+          "post": {
+            "summary": "Cadastrar usuário",
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Usuario"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "201": {
+                "description": "Usuário criado com sucesso!",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Usuario"
+                        }
+                    }
+                  }
+              },
+              "400": {
+                "description": "Erro de validação",
+                "content": {
+                  "application/json": {
+                    "example": {
+                      "mensagem": "Erro de validação",
+                      "detalhes": [
+                        "Preencher todos os campos!",
+                        "A senha precisar ter no mínimo 8 dígitos.",
+                        "A senha precisar ter no máximo 10 dígitos.",
+                        "A senha não pode ter espaços em branco."
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/entrar": {
+          "post": {
+            "summary": "Login de usuário",
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/LoginUsuario"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Usuário autenticado",
+                "content": {
+                  "application/json": {
+                    "example": {
+                      "mensagem": "Usuário autenticado!",
+                      "token": "seu_token_de_autenticacao"
+                    }
+                  }
+                }
+              },
+              "401": {
+                "description": "Credenciais inválidas",
+                "content": {
+                  "application/json": {
+                    "example": {
+                      "mensagem": "E-mail ou senha incorretos!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/projeto": {
+            "post": {
+              "summary": "Cadastrar projeto",
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/Projeto"
+                    }
+                  }
+                }
+              },
+              "responses": {
+                "201": {
+                  "description": "Projeto cadastrado com sucesso!",
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                            "$ref": "#/components/schemas/Projeto"
+                          }
+                      }
+                    }
+                },
+                "400": {
+                  "description": "Erro de validação",
+                  "content": {
+                    "application/json": {
+                      "example": {
+                        "mensagem": "Erro de validação",
+                        "detalhes": [
+                          "O campo título é obrigatório!",
+                          "O campo link é obrigatório!",
+                          "O campo foto é obrigatório!",
+                          "O campo usuario_id é obrigatório!"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "put": {
+                "summary": "Editar projeto",
+                "requestBody": {
+                  "required": true,
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "$ref": "#/components/schemas/Projeto"
+                      }
+                    }
+                  }
+                },
+                "responses": {
+                  "200": {
+                    "description": "Projeto editado com sucesso!",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "$ref": "#/components/schemas/Projeto"
+                        }
+                      }
+                    }
+                  },
+                  "400": {
+                    "description": "Erro de validação",
+                    "content": {
+                      "application/json": {
+                        "example": {
+                          "mensagem": "Erro de validação",
+                          "detalhes": [
+                            "O campo título é obrigatório!",
+                            "O campo link é obrigatório!",
+                            "O campo foto é obrigatório!",
+                            "O campo usuario_id é obrigatório!"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+            },
+            "get": {
+                "summary": "Listar todos os projetos",
+                "responses": {
+                  "200": {
+                    "description": "Lista de projetos",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Projeto"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "400": {
+                    "description": "Erro de validação",
+                    "content": {
+                      "application/json": {
+                        "example": {
+                          "mensagem": "Erro de validação",
+                          "detalhes": [
+                            "O campo título é obrigatório!",
+                            "O campo link é obrigatório!",
+                            "O campo foto é obrigatório!",
+                            "O campo usuario_id é obrigatório!"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+            },
+            "delete": {
+                "summary": "Excluir projeto",
+                "parameters": [
+                    {
+                      "name": "id",
+                      "in": "path",
+                      "description": "ID do projeto",
+                      "required": true,
+                      "schema": {
+                        "type": "string"
+                      }
+                    }
+                  ],
+                "responses": {
+                  "204": {
+                    "description": "Projeto excluído com sucesso!"
+                  },
+                  "404": {
+                    "description": "Projeto não encontrado"
+                  }
+                }
+            }
+        },
+        "/projeto/usuario_id": {
+
+            "get": {
+                "summary": "Listar projetos por usuário",
+                "parameters": [
+                  {
+                    "name": "usuario_id",
+                    "in": "path",
+                    "description": "ID do usuário",
+                    "required": true,
+                    "schema": {
+                      "type": "string"
+                    }
+                  }
+                ],
+                "responses": {
+                  "200": {
+                    "description": "Lista de projetos do usuário",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Projeto"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "400": {
+                    "description": "Erro de validação",
+                    "content": {
+                      "application/json": {
+                        "example": {
+                          "mensagem": "Erro de validação",
+                          "detalhes": [
+                            "O campo usuário_id é obrigatório!"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+            }
+        }
+      },
+      "components": {
+        "schemas": {
+          "Usuario": {
+            "type": "object",
+            "properties": {
+              "nome": {
+                "type": "string"
+              },
+              "sobrenome": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string",
+                "format": "email"
+              },
+              "senha": {
+                "type": "string",
+                "minLength": 8,
+                "maxLength": 10,
+                "pattern": "^[^\\s]+$"
+              }
+            },
+            "required": ["nome", "sobrenome", "email", "senha"]
+          },
+          "LoginUsuario": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "format": "email"
+              },
+              "senha": {
+                "type": "string",
+                "minLength": 8,
+                "maxLength": 10,
+                "pattern": "^[^\\s]+$"
+              }
+            },
+            "required": ["email", "senha"]
+          },
+          "Projeto": {
+            "type": "object",
+            "properties": {
+              "titulo": {
+                "type": "string"
+              },
+              "tags": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "link": {
+                "type": "string"
+              },
+              "descricao": {
+                "type": "string"
+              },
+              "foto": {
+                "type": "string",
+                "format": "binary"
+              },
+              "usuario_id": {
+                "type": "string"
+              }
+            },
+            "required": ["titulo", "link", "foto", "usuario_id"]
+          }
+        }
+    }
+
+
+}
