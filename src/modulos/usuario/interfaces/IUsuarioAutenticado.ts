@@ -1,4 +1,4 @@
-import { IUsuario } from "./IUsuario";
+import { IUsuario } from "./IUsuario"
 
 export interface IUsuarioAutenticado {
     usuario: IUsuario
