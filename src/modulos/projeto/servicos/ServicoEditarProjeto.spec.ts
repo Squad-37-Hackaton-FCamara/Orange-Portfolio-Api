@@ -1,8 +1,8 @@
 import { ICriarProjeto } from '../interfaces/ICriarProjeto'
 import { IRepositorioProjeto } from '../interfaces/IRepositorioProjeto'
 import { IProjeto } from '../interfaces/IProjeto'
-import { AppError } from '../../../compartilhado/errors/AppError'
 import { ServicoEditarProjeto } from './ServicoEditarProjeto'
+import { ErroPersonalizado } from 'src/compartilhado/erros/Erros'
 
 class RepositorioUsuarioMock {
     private usuarios: any[] = [
@@ -11,10 +11,10 @@ class RepositorioUsuarioMock {
             nome: 'Usuário Teste',
             email: 'usuario@teste.com'
         },
-    ];
+    ]
 
     async encontrarPorId(id: string): Promise<any | null> {
-        return this.usuarios.find(usuario => usuario.id === id) || null;
+        return this.usuarios.find(usuario => usuario.id === id) || null
     }
 }
 
@@ -48,32 +48,31 @@ class RepositorioProjetoMock implements IRepositorioProjeto {
     }
 
     async editar(id: string, data: ICriarProjeto): Promise<IProjeto> {
-        const projetoExistente = this.projetos.find(projeto => projeto.id === id);
+        const projetoExistente = this.projetos.find(projeto => projeto.id === id)
 
         if (!projetoExistente) {
-            throw new AppError('O projeto não existe na base de dados!', 404);
+            throw new ErroPersonalizado('O projeto não existe na base de dados!', 400)
         }
 
-        const usuario = await this.repositorioUsuario.encontrarPorId(data.usuario_id);
+        const usuario = await this.repositorioUsuario.encontrarPorId(data.usuario_id)
         if (!usuario) {
-            throw new AppError('O usuário associado ao projeto não existe!', 404);
+            throw new ErroPersonalizado('O usuário associado ao projeto não existe!', 400)
         }
 
-        const linkJaAssociado = this.projetos.some(projeto => projeto.link === data.link && projeto.id !== id);
+        const linkJaAssociado = this.projetos.some(projeto => projeto.link === data.link && projeto.id !== id)
 
         if (linkJaAssociado) {
-            throw new AppError('Esse link já está associado a outro projeto!', 401);
+            throw new ErroPersonalizado('Esse link já está associado a outro projeto!', 400)
         }
 
-        // Atualiza os dados do projeto existente
-        projetoExistente.titulo = data.titulo;
-        projetoExistente.tags = data.tags;
-        projetoExistente.link = data.link;
-        projetoExistente.descricao = data.descricao;
-        projetoExistente.foto = data.foto;
-        projetoExistente.usuario_id = data.usuario_id;
+        projetoExistente.titulo = data.titulo
+        projetoExistente.tags = data.tags
+        projetoExistente.link = data.link
+        projetoExistente.descricao = data.descricao
+        projetoExistente.foto = data.foto
+        projetoExistente.usuario_id = data.usuario_id
 
-        return projetoExistente;
+        return projetoExistente
     }
     listar(): Promise<IProjeto[] | null> {
         throw new Error('Method not implemented.')
@@ -126,7 +125,7 @@ describe('ServicoEditarProjeto', () => {
                 foto: 'https://storage.googleapis.com/upload-file-test-1/stripe-lata.png',
                 usuario_id: 'b300e524-04c4-4f6b-a3a6-5deckvkf84854v'
             })
-        ).rejects.toBeInstanceOf(AppError)
+        ).rejects.toBeInstanceOf(ErroPersonalizado)
     })
 
     it('não deve ser possível editar um novo projeto se o link já estiver associado a outro projeto', async function () {
@@ -140,8 +139,8 @@ describe('ServicoEditarProjeto', () => {
             foto: 'https://storage.googleapis.com/upload-file-test-1/stripe-lata.png',
             usuario_id: 'b300e524-04c4-4f6b-a3a6-5decd165c8e3'
         })
-    ).rejects.toBeInstanceOf(AppError);
-});
+    ).rejects.toBeInstanceOf(ErroPersonalizado)
+})
 
     it('não deve ser possível editar um novo projeto se o usuario_id não existir', async function () {
 
@@ -154,6 +153,6 @@ describe('ServicoEditarProjeto', () => {
                 foto: 'https://storage.googleapis.com/upload-file-test-1/stripe-lata.png',
                 usuario_id: 'b300e524-04c4-4f6b-a3a6-5deckvkf84854v'
             })
-        ).rejects.toBeInstanceOf(AppError)
+        ).rejects.toBeInstanceOf(ErroPersonalizado)
     })
 })
