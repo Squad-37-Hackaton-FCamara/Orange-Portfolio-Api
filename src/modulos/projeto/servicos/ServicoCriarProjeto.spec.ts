@@ -2,7 +2,7 @@ import { ICriarProjeto } from '../interfaces/ICriarProjeto'
 import { IRepositorioProjeto } from '../interfaces/IRepositorioProjeto'
 import { IProjeto } from '../interfaces/IProjeto'
 import { ServicoCriarProjeto } from './ServicoCriarProjeto'
-import { AppError } from '../../../compartilhado/errors/AppError'
+import { ErroPersonalizado } from 'src/compartilhado/erros/Erros'
 
 class RepositorioUsuarioMock {
     private usuarios: any[] = [
@@ -11,10 +11,10 @@ class RepositorioUsuarioMock {
             nome: 'Usuário Teste',
             email: 'usuario@teste.com'
         },
-    ];
+    ]
 
     async encontrarPorId(id: string): Promise<any | null> {
-        return this.usuarios.find(usuario => usuario.id === id) || null;
+        return this.usuarios.find(usuario => usuario.id === id) || null
     }
 }
 
@@ -27,9 +27,9 @@ class RepositorioProjetoMock implements IRepositorioProjeto {
     public async criar(data: ICriarProjeto): Promise<IProjeto> {
         let projeto: IProjeto
 
-         const usuario = await this.repositorioUsuario.encontrarPorId(data.usuario_id);
+         const usuario = await this.repositorioUsuario.encontrarPorId(data.usuario_id)
          if (!usuario) {
-             throw new AppError('O usuário associado ao projeto não existe!', 404);
+            throw new ErroPersonalizado('O usuário associado ao projeto não existe!', 400)
          }
 
         const linkExistente = this.projetos[0]
@@ -37,7 +37,7 @@ class RepositorioProjetoMock implements IRepositorioProjeto {
             : false
 
         if (linkExistente) {
-            throw new AppError('Esse link já está associado a um projeto!', 401)
+            throw new ErroPersonalizado('Esse link já está associado a um projeto!', 400)
         }
 
         projeto = {
@@ -91,7 +91,6 @@ describe('ServicoCriarProjeto', () => {
 
         const projetoCriado = await servicoCriarProjeto.executar(dadosProjeto)
 
-        // Certifique-se de que o usuário foi criado corretamente
         expect(projetoCriado).toBeDefined()
         expect(projetoCriado.id).toBeDefined()
         expect(projetoCriado.titulo).toBe(dadosProjeto.titulo)
@@ -118,7 +117,7 @@ describe('ServicoCriarProjeto', () => {
                 foto: 'https://storage.googleapis.com/upload-file-test-1/stripe-lata.png',
                 usuario_id: 'b300e524-04c4-4f6b-a3a6-5decd165c8e3'
             })
-        ).rejects.toBeInstanceOf(AppError)
+        ).rejects.toBeInstanceOf(ErroPersonalizado)
     })
 
     it('não deve ser possível criar um novo projeto se o usuario_id não existir', async function () {
@@ -132,6 +131,6 @@ describe('ServicoCriarProjeto', () => {
                 foto: 'https://storage.googleapis.com/upload-file-test-1/stripe-lata.png',
                 usuario_id: 'b300e524-04c4-4f6b-a3a6-5deckvkf84854v'
             })
-        ).rejects.toBeInstanceOf(AppError)
+        ).rejects.toBeInstanceOf(ErroPersonalizado)
     })
 })

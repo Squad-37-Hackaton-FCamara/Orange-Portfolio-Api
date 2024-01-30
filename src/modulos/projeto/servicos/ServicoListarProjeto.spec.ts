@@ -42,7 +42,7 @@ class RepositorioProjetoMock implements IRepositorioProjeto {
         throw new Error('Method not implemented.')
     }
     listar(): Promise<IProjeto[] | null> {
-        return Promise.resolve(this.projetos);
+        return Promise.resolve(this.projetos)
     }
     async listarPeloUserId(id: String): Promise<IProjeto[] | null> {
         throw new Error('Method not implemented.')
@@ -62,7 +62,7 @@ describe('ServicoListarPeloUserIdProjeto', () => {
     })
 
     it('deve ser possível listar todos os projetos assosiados ao id', async function () {
-        await expect(servicoListarProjeto.executar()).resolves.toBeDefined();
-    });
+        await expect(servicoListarProjeto.executar()).resolves.toBeDefined()
+    })
 
 })
