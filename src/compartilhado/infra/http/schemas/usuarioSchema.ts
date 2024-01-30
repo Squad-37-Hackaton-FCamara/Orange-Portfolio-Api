@@ -1,55 +1,61 @@
 import joi from 'joi'
 
-// OBS: Ainda falta decidir as mensagens de erro.
+const campoObrigatorio = 'Preencher todos os campos!'
+const espacoRemovido = 'Espaços em branco extras foram removidos.'
 
 export const usuarioSchema = joi.object({
-  nome: joi.string().required().trim().messages({
-    'any.required': 'Informar um nome',
-    'string.empty': 'Informar um nome',
-    'string.trim': '',
+  nome: joi.string().required().trim().custom((value, helpers) => {
+    // Verifica se contém apenas letras
+    if (!/^[a-zA-Z]+$/.test(value)) {
+      return helpers.error('string.invalidFormat')
+    }
+    return value;
+  })
+  .messages({
+    'string.base': "o nome precisa ser um texto",
+    'any.required': campoObrigatorio,
+    'string.empty': campoObrigatorio,
+    'string.trim': espacoRemovido,
+    'string.invalidFormat': 'Insira um nome válido!'
   }),
-  sobrenome: joi.string().required().trim().messages({
-    'any.required': 'Informar um sobrenome',
-    'string.empty': 'Informar um sobrenome',
-    'string.trim': '',
+  sobrenome: joi.string().required().trim().custom((value, helpers) => {
+    // Verifica se contém apenas letras
+    if (!/^[a-zA-Z]+$/.test(value)) {
+      return helpers.error('string.invalidFormat')
+    }
+    return value;
+  })
+  .messages({
+    'any.required': campoObrigatorio,
+    'string.empty': campoObrigatorio,
+    'string.trim': espacoRemovido,
+    'string.invalidFormat': 'Insira um sobrenome válido!'
   }),
   email: joi.string().email().trim().required().messages({
     'string.email': 'Informe um e-mail válido',
-    'any.required': 'Informar um e-mail',
-    'string.empty': 'Informar um e-mail',
-    'string.trim': '',
+    'any.required': campoObrigatorio,
+    'string.empty': campoObrigatorio,
+    'string.trim': espacoRemovido,
   }),
-
   senha: joi
   .string()
   .custom((value, helpers) => {
     // Verifica espaços em branco
     if (/\s/.test(value)) {
-      return helpers.error('string.regex.base');
+      return helpers.error('string.regex.base')
     }
-
-    // Verifica se possui pelo menos uma letra maiúscula
-    if (!/[A-Z]/.test(value)) {
-      return helpers.error('string.regex.uppercase');
-    }
-
-    // Verifica se possui pelo menos um caractere especial
-    if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
-      return helpers.error('string.regex.specialChar');
-    }
-
-    return value;
-  }, '')
+    return value
+   })
   .min(8)
+  .max(10)
+  .trim()
   .required()
   .messages({
-    'any.required': 'Informe uma senha',
+    'any.required': campoObrigatorio,
     'string.min': 'A senha precisar ter no mínimo 8 dígitos.',
-    'string.empty': 'Informe uma senha',
+    'string.max': 'A senha precisar ter no máximo 10 dígitos.',
+    'string.empty': campoObrigatorio,
     'string.regex.base': 'A senha não pode ter espaços em branco.',
-    'string.regex.uppercase':
-      'A senha deve conter pelo menos uma letra maiúscula.',
-    'string.regex.specialChar':
-      'A senha deve conter pelo menos um caractere especial.',
+    'string.trim': espacoRemovido,
   })
-});
+})

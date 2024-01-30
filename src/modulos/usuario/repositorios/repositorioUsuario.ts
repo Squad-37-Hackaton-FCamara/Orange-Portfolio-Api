@@ -3,6 +3,8 @@ import prismaCliente from '../../../compartilhado/infra/prisma'
 import { ICriarUsuario } from '../interfaces/ICriarUsuario'
 import { IRepositorioUsuario } from '../interfaces/IRepositorioUsuario'
 import { IUsuario } from '../interfaces/IUsuario'
+import { ErroPersonalizado } from 'src/compartilhado/erros/Erros'
+
 
 class RepositorioUsuario implements IRepositorioUsuario {
     public async criar({
@@ -11,16 +13,15 @@ class RepositorioUsuario implements IRepositorioUsuario {
         email,
         senha
     }: ICriarUsuario): Promise<IUsuario> {
-        // Verifica se o email já foi cadastrado
+
         let usuarioExistente = await prismaCliente.usuario.findFirst({
             where: { email }
         })
 
         if (usuarioExistente) {
-            // TODO Aguardando a implementação do tratamento de erros.
+            throw new ErroPersonalizado('E-mail já cadastrado. Escolha outro e-mail.', 400)
         }
 
-        // Criptografa a senha
         const senhaCriptografada = await hash(senha, 8)
 
         const usuario = prismaCliente.usuario.create({

@@ -4,8 +4,8 @@ import express from 'express'
 import cors from 'cors'
 import swaggerUi from 'swagger-ui-express'
 import swaggerDcoumentacao from '../../../../swagger.json'
-import  { projetoRotas }  from './routes/projetoRotas'
-import  { usuarioRotas }  from './routes/usuarioRotas'
+import  { projetoRotas }  from './rotas/projetoRotas'
+import  { usuarioRotas }  from './rotas/usuarioRotas'
 
 const porta = process.env.PORT || 3000
 const url = `http://localhost:${porta}`

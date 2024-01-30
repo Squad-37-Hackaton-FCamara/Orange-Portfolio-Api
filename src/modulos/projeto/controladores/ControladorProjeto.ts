@@ -5,11 +5,16 @@ import { ServicoListarProjeto } from '../servicos/ServicoListarProjeto'
 import { ServicoEditarProjeto } from '../servicos/ServicoEditarProjeto'
 import { ServicoListarPeloUserIdProjeto } from '../servicos/ServicoListarPeloUserIdProjeto'
 import { ServicoExcluirProjeto } from '../servicos/ServicoExcluirProjeto'
+import { ErroPersonalizado } from 'src/compartilhado/erros/Erros'
 
 class ControladorProjeto {
     public async criar(req: Request, res: Response): Promise<Response> {
         const { titulo, tags, link, descricao, usuario_id } = req.body
         const foto = req.file
+
+        if (!foto) {
+            throw new ErroPersonalizado('O campo foto é obrigatório', 400)
+        }
 
         const servicoCriarProjeto = new ServicoCriarProjeto(
             new RepositorioProjeto()
@@ -42,6 +47,10 @@ class ControladorProjeto {
         const { id } = req.params
         const { titulo, tags, link, descricao, usuario_id } = req.body
         const foto = req.file
+
+        if (!foto) {
+            throw new ErroPersonalizado('O campo foto é obrigatório', 400)
+        }
 
         const servicoEditarProjeto = new ServicoEditarProjeto(
             new RepositorioProjeto()
@@ -79,7 +88,7 @@ class ControladorProjeto {
             new RepositorioProjeto()
         )
 
-        const projeto = await servicoExcluirProjeto.executar(id)
+        await servicoExcluirProjeto.executar(id)
 
         return res.status(200).json({mensagem: 'O projeto foi deletado com sucesso.'})
     }

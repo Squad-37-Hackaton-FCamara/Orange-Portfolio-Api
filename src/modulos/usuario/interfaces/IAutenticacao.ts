@@ -1,4 +1,4 @@
 export interface IAutenticacao {
-    email: string;
-    senha: string;
-  }
+    email: string
+    senha: string
+}

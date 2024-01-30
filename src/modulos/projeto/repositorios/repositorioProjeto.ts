@@ -2,11 +2,11 @@ import prismaCliente from '../../../compartilhado/infra/prisma'
 import { IRepositorioProjeto } from '../interfaces/IRepositorioProjeto'
 import { IProjeto } from '../interfaces/IProjeto'
 import { ICriarProjeto } from '../interfaces/ICriarProjeto'
-import { AppError } from '../../../compartilhado/errors/AppError'
-import { Storage } from '@google-cloud/storage';
+import { Storage } from '@google-cloud/storage'
+import { ErroPersonalizado } from 'src/compartilhado/erros/Erros'
 
-const storage = new Storage({ keyFilename: 'google-cloud-key.json' });
-const bucket = storage.bucket('upload-file-test-1');
+const storage = new Storage({ keyFilename: 'google-cloud-key.json' })
+const bucket = storage.bucket('upload-file-test-1')
 
 class RepositorioProjeto implements IRepositorioProjeto {
     public async criar({
@@ -22,25 +22,25 @@ class RepositorioProjeto implements IRepositorioProjeto {
 
         if (foto && typeof foto === 'object') {
 
-            const uniqueFileName = `${usuario_id}_${Date.now()}_${foto?.originalname}`;
-            const blob = bucket.file(uniqueFileName);
+            const uniqueFileName = `${usuario_id}_${Date.now()}_${foto?.originalname}`
+            const blob = bucket.file(uniqueFileName)
 
             const blobStream = blob.createWriteStream({
                 resumable: false,
-            });
+            })
 
             // Aguardar o término do upload
             await new Promise<void>((resolve, reject) => {
                 blobStream.on('error', (err) => {
-                    reject(new AppError(err.message, 500));
-                });
+                    reject(new ErroPersonalizado(err.message, 400))
+                })
 
                 blobStream.on('finish', () => {
-                    resolve();
-                });
+                    resolve()
+                })
 
-                blobStream.end(foto?.buffer);
-            });
+                blobStream.end(foto?.buffer)
+            })
 
             publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`
         }
@@ -50,7 +50,7 @@ class RepositorioProjeto implements IRepositorioProjeto {
         })
 
         if (!usuarioExistente) {
-            throw new AppError("Usuário não existe na base de dados.", 404)
+            throw new ErroPersonalizado('Usuário não existe na base de dados.', 400)
         }
 
         const linkExistente = await prismaCliente.projeto.findUnique({
@@ -58,7 +58,7 @@ class RepositorioProjeto implements IRepositorioProjeto {
         })
 
         if (linkExistente?.link) {
-            throw new AppError("Já existe um projeto com esse link na base de dados.", 409)
+            throw new ErroPersonalizado('Já existe um projeto com esse link na base de dados.', 400)
         }
 
         const projeto = prismaCliente.projeto.create({
@@ -88,19 +88,19 @@ class RepositorioProjeto implements IRepositorioProjeto {
             where: {
                 id: String(id)
             }
-        });
+        })
 
         if (!projetoExistente) {
-            throw new AppError('Projeto não encontrado na base de dados.', 404);
+            throw new ErroPersonalizado('Projeto não encontrado na base de dados.', 400)
         }
 
         // Excluir a imagem antiga do GCS
-        const imagemAntiga = projetoExistente.foto;
+        const imagemAntiga = projetoExistente.foto
         if (imagemAntiga) {
-            const nomeArquivoAntigo = imagemAntiga.split('/').pop();
+            const nomeArquivoAntigo = imagemAntiga.split('/').pop()
             if (nomeArquivoAntigo) {
-                const blobAntigo = bucket.file(nomeArquivoAntigo);
-                await blobAntigo.delete();
+                const blobAntigo = bucket.file(nomeArquivoAntigo)
+                await blobAntigo.delete()
             }
         }
 
@@ -109,23 +109,23 @@ class RepositorioProjeto implements IRepositorioProjeto {
         if (foto && typeof foto === 'object') {
 
             // Fazer o upload da nova imagem
-            const uniqueFileName = `${usuario_id}_${Date.now()}_${foto?.originalname}`;
-            const blob = bucket.file(uniqueFileName);
+            const uniqueFileName = `${usuario_id}_${Date.now()}_${foto?.originalname}`
+            const blob = bucket.file(uniqueFileName)
             const blobStream = blob.createWriteStream({
                 resumable: false
-            });
+            })
 
             await new Promise<void>((resolve, reject) => {
                 blobStream.on('error', (err) => {
-                    reject(new AppError(err.message, 500));
-                });
+                    reject(new ErroPersonalizado(err.message, 400))
+                })
 
                 blobStream.on('finish', () => {
-                    resolve();
-                });
+                    resolve()
+                })
 
-                blobStream.end(foto?.buffer);
-            });
+                blobStream.end(foto?.buffer)
+            })
 
             publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`
         }
@@ -142,7 +142,7 @@ class RepositorioProjeto implements IRepositorioProjeto {
               foto: publicUrl,
               usuario_id
             }
-          });
+          })
 
         return projetoEditado
     }
@@ -159,7 +159,7 @@ class RepositorioProjeto implements IRepositorioProjeto {
             where: {
                 usuario_id: String(usuario_id)
             }
-        });
+        })
 
         return projetoUsuarioLogado
 
@@ -171,18 +171,18 @@ class RepositorioProjeto implements IRepositorioProjeto {
             where: {
                 id: String(id)
             }
-        });
+        })
 
         if (!projetoExistente) {
-            throw new AppError('O projeto informado não existe no banco de dados.', 404);
+            throw new ErroPersonalizado('O projeto informado não existe no banco de dados.', 400)
         }
 
-        const imagemProjeto = projetoExistente.foto;
+        const imagemProjeto = projetoExistente.foto
         if (imagemProjeto) {
-            const nomeArquivo = imagemProjeto.split('/').pop();
+            const nomeArquivo = imagemProjeto.split('/').pop()
             if (nomeArquivo) {
-                const blobAntigo = bucket.file(nomeArquivo);
-                await blobAntigo.delete();
+                const blobAntigo = bucket.file(nomeArquivo)
+                await blobAntigo.delete()
             }
         }
 
@@ -190,7 +190,7 @@ class RepositorioProjeto implements IRepositorioProjeto {
             where: {
               id: String(id)
             }
-        });
+        })
     }
 }
 

@@ -6,11 +6,11 @@ class ControladorAutenticacao {
     public async autenticar(req: Request, res: Response): Promise<Response> {
         const { email, senha } = req.body
 
-        const servicoCriarUsuario = new ServicoAutenticacao(
+        const servicoAutenticarUsuario = new ServicoAutenticacao(
             new RepositorioAutenticacao()
         )
 
-        const usuario = await servicoCriarUsuario.executar({
+        const usuario = await servicoAutenticarUsuario.executar({
             email,
             senha
         })
