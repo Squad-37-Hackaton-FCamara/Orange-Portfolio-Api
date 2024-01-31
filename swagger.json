@@ -129,25 +129,18 @@
                 }
               }
             },
-            "put": {
-                "summary": "Editar projeto",
-                "requestBody": {
-                  "required": true,
-                  "content": {
-                    "application/json": {
-                      "schema": {
-                        "$ref": "#/components/schemas/Projeto"
-                      }
-                    }
-                  }
-                },
+            "get": {
+                "summary": "Listar todos os projetos",
                 "responses": {
                   "200": {
-                    "description": "Projeto editado com sucesso!",
+                    "description": "Lista de projetos",
                     "content": {
                       "application/json": {
                         "schema": {
-                          "$ref": "#/components/schemas/Projeto"
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Projeto"
+                          }
                         }
                       }
                     }
@@ -169,19 +162,39 @@
                     }
                   }
                 }
-            },
-            "get": {
-                "summary": "Listar todos os projetos",
+            }
+        },
+        "/projeto/{id}": {
+            "put": {
+                "summary": "Editar projeto",
+                "parameters": [
+                  {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                      "type": "string"
+                    },
+                    "description": "ID do projeto a ser editado"
+                  }
+                ],
+                "requestBody": {
+                  "required": true,
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "$ref": "#/components/schemas/Projeto"
+                      }
+                    }
+                  }
+                },
                 "responses": {
                   "200": {
-                    "description": "Lista de projetos",
+                    "description": "Projeto editado com sucesso!",
                     "content": {
                       "application/json": {
                         "schema": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/Projeto"
-                          }
+                          "$ref": "#/components/schemas/Projeto"
                         }
                       }
                     }
@@ -222,13 +235,12 @@
                     "description": "Projeto excluído com sucesso!"
                   },
                   "404": {
-                    "description": "Projeto não encontrado"
+                    "description": "Projeto não encontrado!"
                   }
                 }
             }
         },
-        "/projeto/usuario_id": {
-
+        "/projeto/{usuario_id}": {
             "get": {
                 "summary": "Listar projetos por usuário",
                 "parameters": [
