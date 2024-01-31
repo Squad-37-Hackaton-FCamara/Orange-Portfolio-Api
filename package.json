@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "start": "npx ts-node -r tsconfig-paths/register --transpile-only src/compartilhado/infra/http/server.ts",
+    "start": "npx ts-node -r tsconfig-paths/register --transpile-only ./src/compartilhado/infra/http/server.ts",
     "dev": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/compartilhado/infra/http/server.ts",
     "lint": "eslint . --ext .ts",
     "lint-fix": "eslint . --ext .ts --fix",
