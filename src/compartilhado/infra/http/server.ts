@@ -7,7 +7,7 @@ import swaggerDcoumentacao from '../../../../swagger.json'
 import  { projetoRotas }  from './rotas/projetoRotas'
 import  { usuarioRotas }  from './rotas/usuarioRotas'
 
-const porta = process.env.PORT || 8080
+const porta = process.env.PORT || 3000
 const url = `http://localhost:${porta}`
 const app = express()
 
