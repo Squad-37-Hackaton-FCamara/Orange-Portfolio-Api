@@ -9,7 +9,7 @@
     "lint": "eslint . --ext .ts",
     "lint-fix": "eslint . --ext .ts --fix",
     "test": "jest",
-    "build": "rmdir /s /q dist && tsc"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
