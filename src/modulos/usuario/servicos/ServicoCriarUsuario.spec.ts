@@ -1,13 +1,13 @@
+import { ErroPersonalizado } from 'src/compartilhado/erros/Erros'
 import { ICriarUsuario } from '../interfaces/ICriarUsuario'
 import { IRepositorioUsuario } from '../interfaces/IRepositorioUsuario'
 import { IUsuario } from '../interfaces/IUsuario'
 import { ServicoCriarUsuario } from './ServicoCriarUsuario'
 
-import { AppError } from '../../../compartilhado/errors/AppError'
-
-// Mock para o repositório de usuário
 class RepositorioUsuarioMock implements IRepositorioUsuario {
+
     private usuarios: IUsuario[] = []
+
     public async criar(data: ICriarUsuario): Promise<IUsuario> {
         let usuario: IUsuario
 
@@ -16,7 +16,7 @@ class RepositorioUsuarioMock implements IRepositorioUsuario {
             : false
 
         if (usuarioExistente) {
-            throw new AppError('ususario já cadastrado!', 401)
+            throw new ErroPersonalizado('Ususario já cadastrado!', 400)
         }
 
         usuario = {
@@ -29,7 +29,6 @@ class RepositorioUsuarioMock implements IRepositorioUsuario {
 
         this.usuarios.push(usuario)
 
-        // Retorna um usuário fictício para fins de teste
         return usuario
     }
 }
@@ -52,7 +51,6 @@ describe('ServicoCriarUsuario', () => {
 
         const usuarioCriado = await servicoCriarUsuario.executar(dadosUsuario)
 
-        // Certifique-se de que o usuário foi criado corretamente
         expect(usuarioCriado).toBeDefined()
         expect(usuarioCriado.id).toBeDefined()
         expect(usuarioCriado.nome).toBe(dadosUsuario.nome)
@@ -74,6 +72,6 @@ describe('ServicoCriarUsuario', () => {
                 email: 'usuario@teste.com',
                 senha: '654321'
             })
-        ).rejects.toBeInstanceOf(AppError)
+        ).rejects.toBeInstanceOf(ErroPersonalizado)
     })
 })

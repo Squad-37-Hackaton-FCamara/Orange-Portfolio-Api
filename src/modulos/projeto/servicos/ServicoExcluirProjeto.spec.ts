@@ -1,8 +1,8 @@
 import { ICriarProjeto } from '../interfaces/ICriarProjeto'
 import { IRepositorioProjeto } from '../interfaces/IRepositorioProjeto'
 import { IProjeto } from '../interfaces/IProjeto'
-import { AppError } from '../../../compartilhado/errors/AppError'
 import { ServicoExcluirProjeto } from './ServicoExcluirProjeto'
+import { ErroPersonalizado } from 'src/compartilhado/erros/Erros'
 
 class RepositorioProjetoMock implements IRepositorioProjeto {
 
@@ -34,7 +34,7 @@ class RepositorioProjetoMock implements IRepositorioProjeto {
         const projetoExistente = this.projetos.find(projeto => projeto.id === id)
 
         if (!projetoExistente) {
-            throw new AppError('O projeto não existe na base de dados!', 404)
+            throw new ErroPersonalizado('O projeto não existe na base de dados!', 400)
         }
     }
 }
@@ -49,10 +49,10 @@ describe('ServicoExcluirProjeto', () => {
     })
 
     it('deve ser possível excluir um projeto', async function () {
-        await expect(servicoExcluirProjeto.executar('1')).resolves.toBeUndefined();
-    });
+        await expect(servicoExcluirProjeto.executar('1')).resolves.toBeUndefined()
+    })
 
     it('não deve ser possível excluir um projeto se o id não existir', async function () {
-        await expect(servicoExcluirProjeto.executar('2')).rejects.toBeInstanceOf(AppError);
-    });
+        await expect(servicoExcluirProjeto.executar('2')).rejects.toBeInstanceOf(ErroPersonalizado)
+    })
 })

@@ -1,8 +1,8 @@
 import { ICriarProjeto } from '../interfaces/ICriarProjeto'
 import { IRepositorioProjeto } from '../interfaces/IRepositorioProjeto'
 import { IProjeto } from '../interfaces/IProjeto'
-import { AppError } from '../../../compartilhado/errors/AppError'
 import { ServicoListarPeloUserIdProjeto } from './ServicoListarPeloUserIdProjeto'
+import { ErroPersonalizado } from 'src/compartilhado/erros/Erros'
 
 class RepositorioUsuarioMock {
     private usuarios: any[] = [
@@ -11,10 +11,10 @@ class RepositorioUsuarioMock {
             nome: 'Usuário Teste',
             email: 'usuario@teste.com'
         }
-    ];
+    ]
 
     async encontrarPorId(id: string): Promise<any | null> {
-        return this.usuarios.find(usuario => usuario.id === id) || null;
+        return this.usuarios.find(usuario => usuario.id === id) || null
     }
 }
 
@@ -63,12 +63,13 @@ class RepositorioProjetoMock implements IRepositorioProjeto {
     }
     async listarPeloUserId(id: String): Promise<IProjeto[] | null> {
 
-        const usuario = await this.repositorioUsuario.encontrarPorId(String(id));
+        const usuario = await this.repositorioUsuario.encontrarPorId(String(id))
+
         if (!usuario) {
-            throw new AppError('O usuário associado ao projeto não existe!', 404);
+            throw new ErroPersonalizado('O usuário associado ao projeto não existe!', 400)
         }
 
-        const projetos = this.projetos.filter(projeto => projeto.usuario_id === id);
+        const projetos = this.projetos.filter(projeto => projeto.usuario_id === id)
 
         return projetos
     }
@@ -87,10 +88,10 @@ describe('ServicoListarPeloUserIdProjeto', () => {
     })
 
     it('deve ser possível listar todos os projetos assosiados ao id', async function () {
-        await expect(servicoListarPeloUserIdProjeto.executar('b300e524-04c4-4f6b-a3a6-5decd165c8e3')).resolves.toBeDefined();
-    });
+        await expect(servicoListarPeloUserIdProjeto.executar('b300e524-04c4-4f6b-a3a6-5decd165c8e3')).resolves.toBeDefined()
+    })
 
     it('não deve ser possível listar todos os projetos assosiados ao id se o id não existir', async function () {
-        await expect(servicoListarPeloUserIdProjeto.executar('b300e524-04c4-4f6b-a3a6ffhdgdfv')).rejects.toBeInstanceOf(AppError);
-    });
+        await expect(servicoListarPeloUserIdProjeto.executar('b300e524-04c4-4f6b-a3a6ffhdgdfv')).rejects.toBeInstanceOf(ErroPersonalizado)
+    })
 })
