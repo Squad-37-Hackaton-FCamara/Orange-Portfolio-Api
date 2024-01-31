@@ -1,4 +1,4 @@
-import { ErroPersonalizado } from 'src/compartilhado/erros/Erros'
+import { ErroPersonalizado } from '../../../compartilhado/erros/Erros'
 import { ICriarUsuario } from '../interfaces/ICriarUsuario'
 import { IRepositorioUsuario } from '../interfaces/IRepositorioUsuario'
 import { IUsuario } from '../interfaces/IUsuario'

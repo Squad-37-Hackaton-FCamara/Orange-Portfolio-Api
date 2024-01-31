@@ -1,7 +1,7 @@
-import autenticacaoConfig from '@config/autenticacao'
+import autenticacaoConfig from '../../../../config/autenticacao'
 import { NextFunction, Request, Response } from "express"
 import { Secret, verify } from "jsonwebtoken"
-import { ErroPersonalizado } from 'src/compartilhado/erros/Erros'
+import { ErroPersonalizado } from '../../../erros/Erros'
 
 interface IToken {
   iat: number
@@ -18,7 +18,7 @@ export default function autenticado(
   if (!autorizacao) {
     throw new ErroPersonalizado('Um token válido é esperado!', 400)
   }
-  
+
   const [, token] = autorizacao.split(" ")
 
   try {

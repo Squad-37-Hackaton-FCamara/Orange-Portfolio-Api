@@ -1,6 +1,6 @@
 import express from 'express'
-import { ControladorAutenticacao } from '@modulos/usuario/controladores/ControladorAutenticacao'
-import { ControladorUsuario } from '@modulos/usuario/controladores/ControladorUsuario'
+import { ControladorAutenticacao } from '../../../../modulos/usuario/controladores/ControladorAutenticacao'
+import { ControladorUsuario } from '../../../../modulos/usuario/controladores/ControladorUsuario'
 import validarRequisicao from '../intermediario/validarCampos'
 import { usuarioSchema } from '../schemas/usuarioSchema'
 

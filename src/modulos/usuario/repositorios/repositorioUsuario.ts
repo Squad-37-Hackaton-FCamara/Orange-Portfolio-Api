@@ -3,7 +3,7 @@ import prismaCliente from '../../../compartilhado/infra/prisma'
 import { ICriarUsuario } from '../interfaces/ICriarUsuario'
 import { IRepositorioUsuario } from '../interfaces/IRepositorioUsuario'
 import { IUsuario } from '../interfaces/IUsuario'
-import { ErroPersonalizado } from 'src/compartilhado/erros/Erros'
+import { ErroPersonalizado } from '../../../compartilhado/erros/Erros'
 
 
 class RepositorioUsuario implements IRepositorioUsuario {

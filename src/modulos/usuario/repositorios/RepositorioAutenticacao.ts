@@ -1,11 +1,11 @@
-import autenticacaoConfig from '@config/autenticacao'
+import autenticacaoConfig from '../../../config/autenticacao'
 import { compare } from 'bcrypt'
 import { Secret, sign } from 'jsonwebtoken'
-import prismaCliente from 'src/compartilhado/infra/prisma'
+import prismaCliente from '../../../compartilhado/infra/prisma'
 import { IAutenticacao } from '../interfaces/IAutenticacao'
 import { IRepositorioAutenticacao } from '../interfaces/IRepositorioAutenticacao'
 import { IUsuarioAutenticado } from '../interfaces/IUsuarioAutenticado'
-import { ErroPersonalizado } from 'src/compartilhado/erros/Erros'
+import { ErroPersonalizado } from '../../../compartilhado/erros/Erros'
 
 export class RepositorioAutenticacao implements IRepositorioAutenticacao {
     public async autenticar({

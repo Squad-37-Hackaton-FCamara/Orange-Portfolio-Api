@@ -2,7 +2,7 @@ import { ICriarProjeto } from '../interfaces/ICriarProjeto'
 import { IRepositorioProjeto } from '../interfaces/IRepositorioProjeto'
 import { IProjeto } from '../interfaces/IProjeto'
 import { ServicoExcluirProjeto } from './ServicoExcluirProjeto'
-import { ErroPersonalizado } from 'src/compartilhado/erros/Erros'
+import { ErroPersonalizado } from '../../../compartilhado/erros/Erros'
 
 class RepositorioProjetoMock implements IRepositorioProjeto {
 

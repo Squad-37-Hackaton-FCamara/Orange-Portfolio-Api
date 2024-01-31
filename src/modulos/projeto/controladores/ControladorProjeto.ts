@@ -5,7 +5,7 @@ import { ServicoListarProjeto } from '../servicos/ServicoListarProjeto'
 import { ServicoEditarProjeto } from '../servicos/ServicoEditarProjeto'
 import { ServicoListarPeloUserIdProjeto } from '../servicos/ServicoListarPeloUserIdProjeto'
 import { ServicoExcluirProjeto } from '../servicos/ServicoExcluirProjeto'
-import { ErroPersonalizado } from 'src/compartilhado/erros/Erros'
+import { ErroPersonalizado } from '../../../compartilhado/erros/Erros'
 
 class ControladorProjeto {
     public async criar(req: Request, res: Response): Promise<Response> {

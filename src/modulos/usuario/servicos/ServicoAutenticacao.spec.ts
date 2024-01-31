@@ -4,7 +4,7 @@ import { IRepositorioAutenticacao } from "../interfaces/IRepositorioAutenticacao
 import { IUsuario } from "../interfaces/IUsuario";
 import { IUsuarioAutenticado } from "../interfaces/IUsuarioAutenticado";
 import { ServicoAutenticacao } from "./ServicoAutenticacao";
-import { ErroPersonalizado } from "src/compartilhado/erros/Erros";
+import { ErroPersonalizado } from "../../../compartilhado/erros/Erros";
 
 class RepositorioAutenticacaoMock implements IRepositorioAutenticacao{
     private usuarios: IUsuario[] = [
