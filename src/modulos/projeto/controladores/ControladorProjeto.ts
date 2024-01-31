@@ -46,11 +46,7 @@ class ControladorProjeto {
     public async editar(req: Request, res: Response): Promise<Response> {
         const { id } = req.params
         const { titulo, tags, link, descricao, usuario_id } = req.body
-        const foto = req.file
-
-        if (!foto) {
-            throw new ErroPersonalizado('O campo foto é obrigatório', 400)
-        }
+        const foto = req.file? req.file : req.body.foto;
 
         const servicoEditarProjeto = new ServicoEditarProjeto(
             new RepositorioProjeto()

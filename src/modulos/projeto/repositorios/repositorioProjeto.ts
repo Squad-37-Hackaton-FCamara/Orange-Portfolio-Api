@@ -94,19 +94,19 @@ class RepositorioProjeto implements IRepositorioProjeto {
             throw new ErroPersonalizado('Projeto não encontrado na base de dados.', 400)
         }
 
-        // Excluir a imagem antiga do GCS
-        const imagemAntiga = projetoExistente.foto
-        if (imagemAntiga) {
-            const nomeArquivoAntigo = imagemAntiga.split('/').pop()
-            if (nomeArquivoAntigo) {
-                const blobAntigo = bucket.file(nomeArquivoAntigo)
-                await blobAntigo.delete()
-            }
-        }
-
         let publicUrl
 
         if (foto && typeof foto === 'object') {
+
+            // Excluir a imagem antiga do GCS
+            const imagemAntiga = projetoExistente.foto
+            if (imagemAntiga) {
+                const nomeArquivoAntigo = imagemAntiga.split('/').pop()
+                if (nomeArquivoAntigo) {
+                    const blobAntigo = bucket.file(nomeArquivoAntigo)
+                    await blobAntigo.delete()
+                }
+            }
 
             // Fazer o upload da nova imagem
             const uniqueFileName = `${usuario_id}_${Date.now()}_${foto?.originalname}`
@@ -182,7 +182,9 @@ class RepositorioProjeto implements IRepositorioProjeto {
             const nomeArquivo = imagemProjeto.split('/').pop()
             if (nomeArquivo) {
                 const blobAntigo = bucket.file(nomeArquivo)
-                await blobAntigo.delete()
+                if(blobAntigo){
+                    await blobAntigo.delete()
+                }
             }
         }
 
