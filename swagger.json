@@ -5,6 +5,11 @@
         "description": "",
         "version": "1.0.0"
     },
+    "tags": [
+
+        "Troca o default"
+
+    ],
     "paths": {
         "/cadastro": {
           "post": {
@@ -15,7 +20,17 @@
                 "application/json": {
                   "schema": {
                     "$ref": "#/components/schemas/Usuario"
-                  }
+                  },
+                    "examples": {
+                        "example1": {
+                            "value": {
+                                "nome": "Amanda",
+                                "sobrenome": "Vieira",
+                                "email": "teste3456@teste.com",
+                                "senha": "123456789"
+                            }
+                        }
+                    }
                 }
               }
             },
@@ -58,7 +73,15 @@
                 "application/json": {
                   "schema": {
                     "$ref": "#/components/schemas/LoginUsuario"
-                  }
+                  },
+                  "examples": {
+                        "example1": {
+                            "value": {
+                                "email": "teste3456@teste.com",
+                                "senha": "123456789"
+                            }
+                        }
+                    }
                 }
               }
             },
@@ -90,10 +113,15 @@
         "/projeto": {
             "post": {
               "summary": "Cadastrar projeto",
+              "security": [
+                {
+                  "BearerAuth": []
+                }
+              ],
               "requestBody": {
                 "required": true,
                 "content": {
-                  "application/json": {
+                  "multipart/form-data": {
                     "schema": {
                       "$ref": "#/components/schemas/Projeto"
                     }
@@ -131,6 +159,11 @@
             },
             "get": {
                 "summary": "Listar todos os projetos",
+                "security": [
+                    {
+                      "BearerAuth": []
+                    }
+                ],
                 "responses": {
                   "200": {
                     "description": "Lista de projetos",
@@ -167,6 +200,11 @@
         "/projeto/{id}": {
             "put": {
                 "summary": "Editar projeto",
+                "security": [
+                    {
+                      "BearerAuth": []
+                    }
+                ],
                 "parameters": [
                   {
                     "in": "path",
@@ -219,6 +257,11 @@
             },
             "delete": {
                 "summary": "Excluir projeto",
+                "security": [
+                    {
+                      "BearerAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                       "name": "id",
@@ -243,6 +286,11 @@
         "/projeto/{usuario_id}": {
             "get": {
                 "summary": "Listar projetos por usuário",
+                "security": [
+                    {
+                      "BearerAuth": []
+                    }
+                ],
                 "parameters": [
                   {
                     "name": "usuario_id",
@@ -332,10 +380,7 @@
                 "type": "string"
               },
               "tags": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
+                "type": "array"
               },
               "link": {
                 "type": "string"
@@ -353,6 +398,13 @@
             },
             "required": ["titulo", "link", "foto", "usuario_id"]
           }
+        },
+        "securitySchemes": {
+            "BearerAuth": {
+              "type": "http",
+              "scheme": "bearer",
+              "bearerFormat": "JWT"
+            }
         }
     }
 
