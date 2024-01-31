@@ -3,7 +3,7 @@ import { IRepositorioProjeto } from '../interfaces/IRepositorioProjeto'
 import { IProjeto } from '../interfaces/IProjeto'
 import { ICriarProjeto } from '../interfaces/ICriarProjeto'
 import { Storage } from '@google-cloud/storage'
-import { ErroPersonalizado } from 'src/compartilhado/erros/Erros'
+import { ErroPersonalizado } from '../../../compartilhado/erros/Erros'
 
 const storage = new Storage({ keyFilename: 'google-cloud-key.json' })
 const bucket = storage.bucket('upload-file-test-1')

@@ -4,12 +4,12 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "start": "node ./dist/src/compartilhado/infra/http/server.js",
+    "start": "node -r tsconfig-paths/register ./dist/src/compartilhado/infra/http/server.js",
     "dev": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/compartilhado/infra/http/server.ts",
     "lint": "eslint . --ext .ts",
     "lint-fix": "eslint . --ext .ts --fix",
     "test": "jest",
-    "build": "rm -rf ./dist && tsc"
+    "build": "rmdir /s /q dist && tsc"
   },
   "keywords": [],
   "author": "",

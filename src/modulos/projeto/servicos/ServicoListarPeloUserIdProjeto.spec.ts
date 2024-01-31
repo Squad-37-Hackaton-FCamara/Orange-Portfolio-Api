@@ -2,7 +2,7 @@ import { ICriarProjeto } from '../interfaces/ICriarProjeto'
 import { IRepositorioProjeto } from '../interfaces/IRepositorioProjeto'
 import { IProjeto } from '../interfaces/IProjeto'
 import { ServicoListarPeloUserIdProjeto } from './ServicoListarPeloUserIdProjeto'
-import { ErroPersonalizado } from 'src/compartilhado/erros/Erros'
+import { ErroPersonalizado } from '../../../compartilhado/erros/Erros'
 
 class RepositorioUsuarioMock {
     private usuarios: any[] = [
