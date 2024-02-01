@@ -1,13 +1,16 @@
 import { Request, Response, NextFunction } from 'express'
 import { Schema } from 'joi'
+import seSwagger from '../../../util/seSwagger'
 
 function validarRequisicao(schema: Schema): any {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
-
-            await schema.validateAsync(req.body, { stripUnknown: true })
+            console.log("seSwagger(req.body)", seSwagger(req.body))
+            await schema.validateAsync(seSwagger(req.body), { stripUnknown: true })
             return next()
+
         } catch (error: any) {
+
             const errorMessage = error.details ? error.details[0].message : error.message
             return res.status(400).json({ error: errorMessage })
         }
