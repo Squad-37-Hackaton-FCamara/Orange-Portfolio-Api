@@ -91,8 +91,13 @@
                 "content": {
                   "application/json": {
                     "example": {
-                      "mensagem": "Usuário autenticado!",
-                      "token": "seu_token_de_autenticacao"
+                        "usuario": {
+                            "id": "4c8450e9-d58f-4629-95c0-cd1909d57ce8",
+                            "nome": "Larissa",
+                            "sobrenome": "Ferreira",
+                            "email": "teste3456@teste.com"
+                        },
+                        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjRjODQ1MGU5LWQ1OGYtNDYyOS05NWMwLWNkMTkwOWQ1N2NlOCIsImlhdCI6MTcwNjc0MDU3MywiZXhwIjoxNzA2ODI2OTczLCJzdWIiOiI0Yzg0NTBlOS1kNThmLTQ2MjktOTVjMC1jZDE5MDlkNTdjZTgifQ.8shKzckJ7NrXeQgH0JOSzYf4zYiOR0FKzwTR9oO1R8M"
                     }
                   }
                 }
@@ -135,7 +140,24 @@
                       "application/json": {
                           "schema": {
                             "$ref": "#/components/schemas/Projeto"
-                          }
+                          },
+                          "examples": {
+                            "example1": {
+                                "value": {
+
+                                    "titulo": "Tela de Login",
+                                    "tags": [
+                                        "Front-end",
+                                        "Html"
+                                    ],
+                                    "link": "http://localhost:3000/",
+                                    "descricao": "Meu projeto de tela de login.",
+                                    "foto": "https://storage.googleapis.com/upload-file-test-1/2a2b6c4c-7c45-431e-81a0-7a2805ee0f05_1706761227996_Captura de tela 2022-11-05 152019.png",
+                                    "usuario_id": "e0ba3c7e-56ed-4248-bc0a-da8a081350b1"
+
+                                }
+                            }
+                        }
                       }
                     }
                 },
@@ -219,7 +241,7 @@
                 "requestBody": {
                   "required": true,
                   "content": {
-                    "application/json": {
+                    "multipart/form-data": {
                       "schema": {
                         "$ref": "#/components/schemas/Projeto"
                       }
@@ -229,11 +251,29 @@
                 "responses": {
                   "200": {
                     "description": "Projeto editado com sucesso!",
-                    "content": {
-                      "application/json": {
-                        "schema": {
-                          "$ref": "#/components/schemas/Projeto"
+                        "content": {
+                        "application/json": {
+                            "schema": {
+                            "$ref": "#/components/schemas/Projeto"
+                            },
+                            "examples": {
+                                "example1": {
+                                    "value": {
+
+                                    "titulo": "Tela de Login",
+                                    "tags": [
+                                        "Front-end",
+                                        "Html"
+                                    ],
+                                    "link": "http://localhost:3000/",
+                                    "descricao": "Meu projeto de tela de login.",
+                                    "foto": "https://storage.googleapis.com/upload-file-test-1/2a2b6c4c-7c45-431e-81a0-7a2805ee0f05_1706761227996_Captura de tela 2022-11-05 152019.png",
+                                    "usuario_id": "e0ba3c7e-56ed-4248-bc0a-da8a081350b1"
+
+                                }
+                            }
                         }
+
                       }
                     }
                   },
@@ -380,7 +420,11 @@
                 "type": "string"
               },
               "tags": {
-                "type": "array"
+                "type": "array",
+                "items": {
+                    "type":"string"
+                },
+                "collectionFormat": "multi"
               },
               "link": {
                 "type": "string"
@@ -407,6 +451,5 @@
             }
         }
     }
-
 
 }

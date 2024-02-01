@@ -19,8 +19,6 @@ model Usuario {
     sobrenome     String
     email         String  @unique
     senha         String
-    foto          String?
-    nacionalidade String?
 
     projetos Projeto[]
 
@@ -34,6 +32,7 @@ model Projeto {
     link      String   @unique
     descricao String
     foto      String
+    createAt  DateTime @default(now())
 
     usuario    Usuario @relation(fields: [usuario_id], references: [id])
     usuario_id String

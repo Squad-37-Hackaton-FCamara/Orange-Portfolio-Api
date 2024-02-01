@@ -6,10 +6,13 @@ import { ServicoEditarProjeto } from '../servicos/ServicoEditarProjeto'
 import { ServicoListarPeloUserIdProjeto } from '../servicos/ServicoListarPeloUserIdProjeto'
 import { ServicoExcluirProjeto } from '../servicos/ServicoExcluirProjeto'
 import { ErroPersonalizado } from '../../../compartilhado/erros/Erros'
+import seSwagger from '../../../compartilhado/util/seSwagger'
 
 class ControladorProjeto {
     public async criar(req: Request, res: Response): Promise<Response> {
-        const { titulo, tags, link, descricao, usuario_id } = req.body
+
+        const body = seSwagger(req.body)
+        const { titulo, tags, link, descricao, usuario_id } = body
         const foto = req.file
 
         if (!foto) {
@@ -44,8 +47,10 @@ class ControladorProjeto {
     }
 
     public async editar(req: Request, res: Response): Promise<Response> {
+
+        const body = seSwagger(req.body)
+        const { titulo, tags, link, descricao, usuario_id } = body
         const { id } = req.params
-        const { titulo, tags, link, descricao, usuario_id } = req.body
         const foto = req.file? req.file : req.body.foto;
 
         const servicoEditarProjeto = new ServicoEditarProjeto(
