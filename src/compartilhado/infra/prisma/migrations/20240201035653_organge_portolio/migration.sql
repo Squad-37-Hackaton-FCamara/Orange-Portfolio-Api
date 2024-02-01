@@ -5,8 +5,6 @@ CREATE TABLE "usuarios" (
     "sobrenome" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "senha" TEXT NOT NULL,
-    "foto" TEXT,
-    "nacionalidade" TEXT,
 
     CONSTRAINT "usuarios_pkey" PRIMARY KEY ("id")
 );
@@ -19,6 +17,7 @@ CREATE TABLE "projetos" (
     "link" TEXT NOT NULL,
     "descricao" TEXT NOT NULL,
     "foto" TEXT NOT NULL,
+    "createAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "usuario_id" TEXT NOT NULL,
 
     CONSTRAINT "projetos_pkey" PRIMARY KEY ("id")

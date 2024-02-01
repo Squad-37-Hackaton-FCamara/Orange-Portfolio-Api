@@ -6,4 +6,5 @@ export interface IProjeto {
     descricao: string | ''
     foto: string | Express.Multer.File | undefined
     usuario_id: string
+    createAt?: Date
 }

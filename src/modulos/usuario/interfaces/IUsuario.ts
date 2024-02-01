@@ -6,7 +6,5 @@ export interface IUsuario {
     sobrenome: string
     email: string
     senha: string
-    foto?: string | null
-    nacionalidade?: string | null
     projetos?: IProjeto[]
 }
