@@ -15,7 +15,14 @@ class ControladorAutenticacao {
             senha
         })
 
-        return res.status(200).json(usuario)
+        const { id, nome, sobrenome, email: novoEmail } = usuario.usuario
+        const resposta = {
+            usuario: {id, nome, sobrenome, email: novoEmail},
+            token: usuario.token
+        };
+
+        return res.status(201).json(resposta)
+
     }
 }
 
