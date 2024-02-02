@@ -47,7 +47,8 @@ class RepositorioProjetoMock implements IRepositorioProjeto {
             link: data.link,
             descricao: data.descricao,
             foto: data.foto,
-            usuario_id: data.usuario_id
+            usuario_id: data.usuario_id,
+            autor: data.autor
         }
 
         this.projetos.push(projeto)
@@ -86,7 +87,8 @@ describe('ServicoCriarProjeto', () => {
             link: 'https://www.linkedin.com/',
             descricao: 'Descrição do meu projeto teste',
             foto: 'https://storage.googleapis.com/upload-file-test-1/stripe-lata.png',
-            usuario_id: 'b300e524-04c4-4f6b-a3a6-5decd165c8e3'
+            usuario_id: 'b300e524-04c4-4f6b-a3a6-5decd165c8e3',
+            autor: 'Usuário Teste'
         }
 
         const projetoCriado = await servicoCriarProjeto.executar(dadosProjeto)
@@ -105,7 +107,8 @@ describe('ServicoCriarProjeto', () => {
             link: 'https://www.linkedin.com/',
             descricao: 'Descrição do meu projeto teste',
             foto: 'https://storage.googleapis.com/upload-file-test-1/stripe-lata.png',
-            usuario_id: 'b300e524-04c4-4f6b-a3a6-5decd165c8e3'
+            usuario_id: 'b300e524-04c4-4f6b-a3a6-5decd165c8e3',
+            autor: 'Usuário Teste'
         })
 
         expect(
@@ -115,7 +118,8 @@ describe('ServicoCriarProjeto', () => {
                 link: 'https://www.linkedin.com/',
                 descricao: 'Descrição do meu projeto teste',
                 foto: 'https://storage.googleapis.com/upload-file-test-1/stripe-lata.png',
-                usuario_id: 'b300e524-04c4-4f6b-a3a6-5decd165c8e3'
+                usuario_id: 'b300e524-04c4-4f6b-a3a6-5decd165c8e3',
+                autor: 'Usuário Teste'
             })
         ).rejects.toBeInstanceOf(ErroPersonalizado)
     })
@@ -129,7 +133,8 @@ describe('ServicoCriarProjeto', () => {
                 link: 'https://www.linkedin.com/',
                 descricao: 'Descrição do meu projeto teste',
                 foto: 'https://storage.googleapis.com/upload-file-test-1/stripe-lata.png',
-                usuario_id: 'b300e524-04c4-4f6b-a3a6-5deckvkf84854v'
+                usuario_id: 'b300e524-04c4-4f6b-a3a6-5deckvkf84854v',
+                autor: 'Usuário Teste'
             })
         ).rejects.toBeInstanceOf(ErroPersonalizado)
     })

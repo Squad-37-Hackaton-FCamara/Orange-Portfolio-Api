@@ -12,7 +12,7 @@ class ControladorProjeto {
     public async criar(req: Request, res: Response): Promise<Response> {
 
         const body = seSwagger(req.body)
-        const { titulo, tags, link, descricao, usuario_id } = body
+        const { titulo, tags, link, descricao, usuario_id, autor } = body
         const foto = req.file
 
         if (!foto) {
@@ -29,7 +29,8 @@ class ControladorProjeto {
             link,
             descricao,
             foto,
-            usuario_id
+            usuario_id,
+            autor
         })
 
         return res.status(201).json(projeto)
@@ -49,7 +50,7 @@ class ControladorProjeto {
     public async editar(req: Request, res: Response): Promise<Response> {
 
         const body = seSwagger(req.body)
-        const { titulo, tags, link, descricao, usuario_id } = body
+        const { titulo, tags, link, descricao, usuario_id, autor } = body
         const { id } = req.params
         const foto = req.file? req.file : req.body.foto;
 
@@ -63,7 +64,8 @@ class ControladorProjeto {
             link,
             descricao,
             foto,
-            usuario_id
+            usuario_id,
+            autor
 
         })
 

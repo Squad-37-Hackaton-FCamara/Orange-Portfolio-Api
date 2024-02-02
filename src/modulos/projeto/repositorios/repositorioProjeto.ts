@@ -10,12 +10,13 @@ const bucket = storage.bucket('upload-file-test-1')
 
 class RepositorioProjeto implements IRepositorioProjeto {
     public async criar({
+        autor,
         titulo,
         tags,
         link,
         descricao,
         foto,
-        usuario_id
+        usuario_id,
     }: ICriarProjeto): Promise<IProjeto> {
 
         let publicUrl
@@ -68,8 +69,9 @@ class RepositorioProjeto implements IRepositorioProjeto {
                 link,
                 descricao,
                 foto: publicUrl as string,
-                usuario_id
-            }
+                usuario_id,
+                autor
+            } as any
         })
 
         return projeto
@@ -81,7 +83,8 @@ class RepositorioProjeto implements IRepositorioProjeto {
         link,
         descricao,
         foto,
-        usuario_id
+        usuario_id,
+        autor
     }: ICriarProjeto): Promise<IProjeto> {
 
         const projetoExistente = await prismaCliente.projeto.findUnique({
@@ -140,8 +143,9 @@ class RepositorioProjeto implements IRepositorioProjeto {
               link,
               descricao,
               foto: publicUrl,
-              usuario_id
-            }
+              usuario_id,
+              autor
+            } as any
           })
 
         return projetoEditado

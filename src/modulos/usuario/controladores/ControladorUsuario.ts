@@ -4,8 +4,8 @@ import { ServicoCriarUsuario } from '../servicos/ServicoCriarUsuario'
 
 class ControladorUsuario {
     public async criar(req: Request, res: Response): Promise<Response> {
-        const { nome, sobrenome, email, senha } = req.body
-        email.trim();
+        let { nome, sobrenome, email, senha } = req.body
+        email = email.trim();
 
         const servicoCriarUsuario = new ServicoCriarUsuario(
             new RepositorioUsuario()
@@ -18,7 +18,7 @@ class ControladorUsuario {
             senha
         })
 
-        const { id, nome: novoNome, sobrenome: novoSobrenome, email: novoEmail } = usuario;
+        const { id, nome: novoNome, sobrenome: novoSobrenome, email: novoEmail } = req.body;
 
         return res.status(201).json({ id, nome: novoNome, sobrenome: novoSobrenome, email: novoEmail })
     }
