@@ -71,7 +71,7 @@ class RepositorioProjeto implements IRepositorioProjeto {
                 foto: publicUrl as string,
                 usuario_id,
                 autor
-            } as any
+            }
         })
 
         return projeto
@@ -145,7 +145,7 @@ class RepositorioProjeto implements IRepositorioProjeto {
               foto: publicUrl,
               usuario_id,
               autor
-            } as any
+            }
           })
 
         return projetoEditado
