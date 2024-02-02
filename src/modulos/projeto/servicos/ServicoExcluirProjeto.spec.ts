@@ -14,7 +14,8 @@ class RepositorioProjetoMock implements IRepositorioProjeto {
             link: 'https://www.linkedin.com/',
             descricao: 'Descrição do meu projeto teste',
             foto: 'https://storage.googleapis.com/upload-file-test-1/stripe-lata.png',
-            usuario_id: 'b300e524-04c4-4f6b-a3a6-5decd165c8e3'
+            usuario_id: 'b300e524-04c4-4f6b-a3a6-5decd165c8e3',
+            autor: 'Usuário Teste'
         }
     ]
 

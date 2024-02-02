@@ -62,6 +62,15 @@ class RepositorioProjeto implements IRepositorioProjeto {
             throw new ErroPersonalizado('Já existe um projeto com esse link na base de dados.', 400)
         }
 
+        console.log('QUERVER', {
+            titulo,
+                tags,
+                link,
+                descricao,
+                foto: publicUrl as string,
+                usuario_id,
+                autor
+        })
         const projeto = prismaCliente.projeto.create({
             data: {
                 titulo,
