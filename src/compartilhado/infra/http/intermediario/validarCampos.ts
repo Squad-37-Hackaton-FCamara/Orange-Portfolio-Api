@@ -5,7 +5,7 @@ import seSwagger from '../../../util/seSwagger'
 function validarRequisicao(schema: Schema): any {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
-            console.log("seSwagger(req.body)", seSwagger(req.body))
+            
             await schema.validateAsync(seSwagger(req.body), { stripUnknown: true })
             return next()
 

@@ -1,4 +1,5 @@
 export interface ICriarProjeto {
+    autor: string
     titulo: string
     tags: string[]
     link: string

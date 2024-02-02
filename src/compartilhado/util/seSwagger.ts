@@ -9,7 +9,8 @@ function seSwagger(body: any): any {
             tags: tagsArray,
             link: body.link,
             descricao: body.descricao,
-            usuario_id: body.usuario_id
+            usuario_id: body.usuario_id,
+            autor: body.autor
         }
     }
 

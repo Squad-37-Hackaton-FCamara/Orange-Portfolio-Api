@@ -27,6 +27,7 @@ model Usuario {
 
 model Projeto {
     id        String   @id @default(uuid())
+    autor     String
     titulo    String
     tags      String[]
     link      String   @unique

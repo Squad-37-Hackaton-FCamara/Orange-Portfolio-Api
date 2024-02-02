@@ -12,12 +12,13 @@ CREATE TABLE "usuarios" (
 -- CreateTable
 CREATE TABLE "projetos" (
     "id" TEXT NOT NULL,
+    "autor" TEXT NOT NULL,
     "titulo" TEXT NOT NULL,
     "tags" TEXT[],
     "link" TEXT NOT NULL,
     "descricao" TEXT NOT NULL,
     "foto" TEXT NOT NULL,
-    "createAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "Type '{ id: string; titulo: string; tags: string[]; link: string; descricao: string; foto: string; createAt: Date; usuario_id: string; }' is not assignable to type 'IProjeto'.ts(2322)" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "usuario_id" TEXT NOT NULL,
 
     CONSTRAINT "projetos_pkey" PRIMARY KEY ("id")

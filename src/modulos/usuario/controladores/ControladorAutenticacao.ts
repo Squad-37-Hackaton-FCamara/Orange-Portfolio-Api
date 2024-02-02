@@ -21,7 +21,7 @@ class ControladorAutenticacao {
             token: usuario.token
         };
 
-        return res.status(201).json(resposta)
+        return res.status(200).json(resposta)
 
     }
 }

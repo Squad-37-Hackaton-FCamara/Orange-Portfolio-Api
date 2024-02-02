@@ -28,7 +28,8 @@ class RepositorioProjetoMock implements IRepositorioProjeto {
             link: 'https://www.linkedin.com/',
             descricao: 'Descrição do meu projeto teste',
             foto: 'https://storage.googleapis.com/upload-file-test-1/stripe-lata.png',
-            usuario_id: 'b300e524-04c4-4f6b-a3a6-5decd165c8e3'
+            usuario_id: 'b300e524-04c4-4f6b-a3a6-5decd165c8e3',
+            autor: 'Usuário Teste'
         },
         {
             id: '2',
@@ -37,7 +38,8 @@ class RepositorioProjetoMock implements IRepositorioProjeto {
             link: 'https://www.google.com/',
             descricao: 'Descrição do meu projeto teste',
             foto: 'https://storage.googleapis.com/upload-file-test-1/stripe-lata.png',
-            usuario_id: 'b300e524-04c4-4f6b-a3a6-5decd165c8e3'
+            usuario_id: 'b300e524-04c4-4f6b-a3a6-5decd165c8e3',
+            autor: 'Usuário Teste'
         }
     ]
 
@@ -71,6 +73,7 @@ class RepositorioProjetoMock implements IRepositorioProjeto {
         projetoExistente.descricao = data.descricao
         projetoExistente.foto = data.foto
         projetoExistente.usuario_id = data.usuario_id
+        projetoExistente.autor = data.autor
 
         return projetoExistente
     }
@@ -102,7 +105,8 @@ describe('ServicoEditarProjeto', () => {
             link: 'https://www.linkedin.com/',
             descricao: 'Descrição do meu projeto teste',
             foto: 'https://storage.googleapis.com/upload-file-test-1/stripe-lata.png',
-            usuario_id: 'b300e524-04c4-4f6b-a3a6-5decd165c8e3'
+            usuario_id: 'b300e524-04c4-4f6b-a3a6-5decd165c8e3',
+            autor: 'Usuário Teste'
         }
 
         const projetoEditado = await servicoEditarProjeto.executar('1', dadosProjeto)
@@ -123,7 +127,8 @@ describe('ServicoEditarProjeto', () => {
                 link: 'https://www.linkedin.com/',
                 descricao: 'Descrição do meu projeto teste',
                 foto: 'https://storage.googleapis.com/upload-file-test-1/stripe-lata.png',
-                usuario_id: 'b300e524-04c4-4f6b-a3a6-5deckvkf84854v'
+                usuario_id: 'b300e524-04c4-4f6b-a3a6-5deckvkf84854v',
+                autor: 'Usuário Teste'
             })
         ).rejects.toBeInstanceOf(ErroPersonalizado)
     })
@@ -137,7 +142,8 @@ describe('ServicoEditarProjeto', () => {
             link: 'https://www.linkedin.com/',
             descricao: 'Descrição do meu projeto teste',
             foto: 'https://storage.googleapis.com/upload-file-test-1/stripe-lata.png',
-            usuario_id: 'b300e524-04c4-4f6b-a3a6-5decd165c8e3'
+            usuario_id: 'b300e524-04c4-4f6b-a3a6-5decd165c8e3',
+            autor: 'Usuário Teste'
         })
     ).rejects.toBeInstanceOf(ErroPersonalizado)
 })
@@ -151,7 +157,8 @@ describe('ServicoEditarProjeto', () => {
                 link: 'https://www.linkedin.com/',
                 descricao: 'Descrição do meu projeto teste',
                 foto: 'https://storage.googleapis.com/upload-file-test-1/stripe-lata.png',
-                usuario_id: 'b300e524-04c4-4f6b-a3a6-5deckvkf84854v'
+                usuario_id: 'b300e524-04c4-4f6b-a3a6-5deckvkf84854v',
+                autor: 'Usuário Teste'
             })
         ).rejects.toBeInstanceOf(ErroPersonalizado)
     })
