@@ -9,6 +9,7 @@ const storage = new Storage({ keyFilename: 'google-cloud-key.json' })
 const bucket = storage.bucket('upload-file-test-1')
 
 class RepositorioProjeto implements IRepositorioProjeto {
+
     public async criar({
         autor,
         titulo,
@@ -62,15 +63,6 @@ class RepositorioProjeto implements IRepositorioProjeto {
             throw new ErroPersonalizado('Já existe um projeto com esse link na base de dados.', 400)
         }
 
-        console.log('QUERVER', {
-            titulo,
-                tags,
-                link,
-                descricao,
-                foto: publicUrl as string,
-                usuario_id,
-                autor
-        })
         const projeto = prismaCliente.projeto.create({
             data: {
                 titulo,
@@ -160,13 +152,13 @@ class RepositorioProjeto implements IRepositorioProjeto {
         return projetoEditado
     }
 
-    public async listar(): Promise<IProjeto[] | null> {
+    public async listar(): Promise<IProjeto[] | []> {
         const projetos = prismaCliente.projeto.findMany()
 
         return projetos
     }
 
-    public async listarPeloUserId(usuario_id: String): Promise<IProjeto[] | null> {
+    public async listarPeloUserId(usuario_id: String): Promise<IProjeto[] | []> {
 
         const projetoUsuarioLogado = await prismaCliente.projeto.findMany({
             where: {

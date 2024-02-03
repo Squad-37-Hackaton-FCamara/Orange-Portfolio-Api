@@ -22,7 +22,7 @@ export const usuarioSchema = joi.object({
     'string.max': 'O nome precisar ter no máximo 15 caracteres.',
   }),
   sobrenome: joi.string().required().trim().min(3)
-  .max(10).custom((value, helpers) => {
+  .max(15).custom((value, helpers) => {
     // Verifica se contém apenas letras
     if (!/^[a-zA-Z]+$/.test(value)) {
       return helpers.error('string.invalidFormat')

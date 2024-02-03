@@ -61,10 +61,11 @@ class RepositorioProjetoMock implements IRepositorioProjeto {
     editar(id: String, data: ICriarProjeto): Promise<IProjeto> {
         throw new Error('Method not implemented.')
     }
-    listar(): Promise<IProjeto[] | null> {
+    listar(): Promise<IProjeto[] | []> {
         throw new Error('Method not implemented.')
     }
-    async listarPeloUserId(id: String): Promise<IProjeto[] | null> {
+    async listarPeloUserId(id: String): Promise<IProjeto[] | []> {
+        const tag = 'Fron';
 
         const usuario = await this.repositorioUsuario.encontrarPorId(String(id))
 
@@ -72,7 +73,12 @@ class RepositorioProjetoMock implements IRepositorioProjeto {
             throw new ErroPersonalizado('O usuário associado ao projeto não existe!', 400)
         }
 
-        const projetos = this.projetos.filter(projeto => projeto.usuario_id === id)
+        let projetos = this.projetos.filter(projeto => projeto.usuario_id === id);
+
+        // Filtrar por tag, se a tag estiver presente
+        if (tag) {
+            projetos = projetos.filter(projeto => projeto.tags.includes(tag));
+        }
 
         return projetos
     }
@@ -91,10 +97,12 @@ describe('ServicoListarPeloUserIdProjeto', () => {
     })
 
     it('deve ser possível listar todos os projetos assosiados ao id', async function () {
-        await expect(servicoListarPeloUserIdProjeto.executar('b300e524-04c4-4f6b-a3a6-5decd165c8e3')).resolves.toBeDefined()
+        const tag = 'Fron';
+        await expect(servicoListarPeloUserIdProjeto.executar('b300e524-04c4-4f6b-a3a6-5decd165c8e3', tag)).resolves.toBeDefined()
     })
 
     it('não deve ser possível listar todos os projetos assosiados ao id se o id não existir', async function () {
-        await expect(servicoListarPeloUserIdProjeto.executar('b300e524-04c4-4f6b-a3a6ffhdgdfv')).rejects.toBeInstanceOf(ErroPersonalizado)
+        const tag = 'Fron';
+        await expect(servicoListarPeloUserIdProjeto.executar('b300e524-04c4-4f6b-a3a6ffhdgdfv', tag)).rejects.toBeInstanceOf(ErroPersonalizado)
     })
 })
