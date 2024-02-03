@@ -59,10 +59,10 @@ class RepositorioProjetoMock implements IRepositorioProjeto {
     editar(id: String, data: ICriarProjeto): Promise<IProjeto> {
         throw new Error('Method not implemented.')
     }
-    listar(): Promise<IProjeto[] | null> {
+    listar(): Promise<IProjeto[] | []> {
         throw new Error('Method not implemented.')
     }
-    listarPeloUserId(id: String): Promise<IProjeto[] | null> {
+    listarPeloUserId(id: String): Promise<IProjeto[] | []> {
         throw new Error('Method not implemented.')
     }
     excluir(id: String): Promise<void> {

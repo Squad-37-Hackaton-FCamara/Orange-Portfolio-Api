@@ -38,13 +38,15 @@ class ControladorProjeto {
 
     public async listar(req: Request, res: Response): Promise<Response> {
 
+        const tag = req.query.tag as string | undefined
+
         const servicoListarProjeto = new ServicoListarProjeto(
             new RepositorioProjeto()
         )
 
-        const projetos = await servicoListarProjeto.executar()
+        const projetos = await servicoListarProjeto.executar(tag || '')
 
-        return res.status(201).json(projetos)
+        return res.status(200).json(projetos)
     }
 
     public async editar(req: Request, res: Response): Promise<Response> {
@@ -74,12 +76,13 @@ class ControladorProjeto {
 
     public async listarPeloUserId(req: Request, res: Response): Promise<Response> {
         const { usuario_id } = req.params
+        const tag = req.query.tag as string | undefined
 
         const servicoListarPeloUserIdProjeto = new ServicoListarPeloUserIdProjeto(
             new RepositorioProjeto()
         )
 
-        const projetos = await servicoListarPeloUserIdProjeto.executar(usuario_id)
+        const projetos = await servicoListarPeloUserIdProjeto.executar(usuario_id, tag || '')
 
         return res.status(201).json(projetos)
     }

@@ -77,10 +77,10 @@ class RepositorioProjetoMock implements IRepositorioProjeto {
 
         return projetoExistente
     }
-    listar(): Promise<IProjeto[] | null> {
+    listar(): Promise<IProjeto[] | []> {
         throw new Error('Method not implemented.')
     }
-    listarPeloUserId(id: String): Promise<IProjeto[] | null> {
+    listarPeloUserId(id: String): Promise<IProjeto[] | []> {
         throw new Error('Method not implemented.')
     }
     excluir(id: String): Promise<void> {
