@@ -438,6 +438,9 @@
               },
               "usuario_id": {
                 "type": "string"
+              },
+              "autor": {
+                "type": "string"
               }
             },
             "required": ["titulo", "link", "foto", "usuario_id"]
