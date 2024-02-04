@@ -5,6 +5,9 @@ import { IUsuario } from '../interfaces/IUsuario'
 import { ServicoCriarUsuario } from './ServicoCriarUsuario'
 
 class RepositorioUsuarioMock implements IRepositorioUsuario {
+    seUsusarioExiste(email: string): Promise<boolean> {
+        throw new Error('Method not implemented.')
+    }
 
     private usuarios: IUsuario[] = []
 

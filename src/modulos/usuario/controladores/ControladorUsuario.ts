@@ -1,6 +1,8 @@
 import { Request, Response } from 'express'
 import { RepositorioUsuario } from '../repositorios/repositorioUsuario'
 import { ServicoCriarUsuario } from '../servicos/ServicoCriarUsuario'
+import { ServicoVerificarEmail } from '../servicos/ServiçoVerificarEmail';
+import { string } from 'joi';
 
 class ControladorUsuario {
     public async criar(req: Request, res: Response): Promise<Response> {
@@ -21,6 +23,18 @@ class ControladorUsuario {
         const { id, nome: novoNome, sobrenome: novoSobrenome, email: novoEmail } = req.body;
 
         return res.status(201).json({ id, nome: novoNome, sobrenome: novoSobrenome, email: novoEmail })
+    }
+
+    public async verificarEmail(req: Request, res: Response): Promise<Response> {
+        let {email} = req.body
+
+        const servicoCriarUsuario = new ServicoVerificarEmail(
+            new RepositorioUsuario()
+        )
+
+        const exiteEmail = await servicoCriarUsuario.executar(email)
+
+        return res.status(201).json(exiteEmail)
     }
 }
 
