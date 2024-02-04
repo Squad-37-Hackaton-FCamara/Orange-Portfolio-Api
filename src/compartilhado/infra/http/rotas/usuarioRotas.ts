@@ -8,5 +8,6 @@ const usuarioRotas = express()
 
 usuarioRotas.post('/cadastro', validarRequisicao(usuarioSchema), new ControladorUsuario().criar)
 usuarioRotas.post('/entrar', new ControladorAutenticacao().autenticar)
+usuarioRotas.post('/verificar-email', new ControladorUsuario().verificarEmail)
 
 export { usuarioRotas }

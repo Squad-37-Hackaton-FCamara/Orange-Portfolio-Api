@@ -35,6 +35,18 @@ class RepositorioUsuario implements IRepositorioUsuario {
 
         return usuario
     }
+
+    async seUsusarioExiste(email: string): Promise<boolean> {
+        let usuarioExistente = await prismaCliente.usuario.findFirst({
+            where: { email }
+        })
+
+        if (usuarioExistente) {
+            return true
+        }
+
+        return false
+    }
 }
 
 export { RepositorioUsuario }
