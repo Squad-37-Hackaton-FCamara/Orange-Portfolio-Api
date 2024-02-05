@@ -1,0 +1,42 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
+}
+
+datasource db {
+    provider          = "postgresql"
+    url               = env("DATABASE_URL")
+    shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+// Migrations
+model Usuario {
+    id            String  @id @default(uuid())
+    nome          String
+    sobrenome     String
+    email         String  @unique
+    senha         String
+
+    projetos Projeto[]
+
+    @@map("usuarios")
+}
+
+model Projeto {
+    id        String   @id @default(uuid())
+    autor     String
+    titulo    String
+    tags      String[]
+    link      String   @unique
+    descricao String
+    foto      String
+    createAt  DateTime @default(now())
+
+    usuario    Usuario @relation(fields: [usuario_id], references: [id])
+    usuario_id String
+
+    @@map("projetos")
+}

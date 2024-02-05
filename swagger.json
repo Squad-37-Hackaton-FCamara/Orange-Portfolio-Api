@@ -1,0 +1,455 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Orange Portifólio",
+        "description": "",
+        "version": "1.0.0"
+    },
+    "tags": [
+
+        "Troca o default"
+
+    ],
+    "paths": {
+        "/cadastro": {
+          "post": {
+            "summary": "Cadastrar usuário",
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Usuario"
+                  },
+                    "examples": {
+                        "example1": {
+                            "value": {
+                                "nome": "Amanda",
+                                "sobrenome": "Vieira",
+                                "email": "teste3456@teste.com",
+                                "senha": "123456789"
+                            }
+                        }
+                    }
+                }
+              }
+            },
+            "responses": {
+              "201": {
+                "description": "Usuário criado com sucesso!",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Usuario"
+                        }
+                    }
+                  }
+              },
+              "400": {
+                "description": "Erro de validação",
+                "content": {
+                  "application/json": {
+                    "example": {
+                      "mensagem": "Erro de validação",
+                      "detalhes": [
+                        "Preencher todos os campos!",
+                        "A senha precisar ter no mínimo 8 dígitos.",
+                        "A senha precisar ter no máximo 10 dígitos.",
+                        "A senha não pode ter espaços em branco."
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/entrar": {
+          "post": {
+            "summary": "Login de usuário",
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/LoginUsuario"
+                  },
+                  "examples": {
+                        "example1": {
+                            "value": {
+                                "email": "teste3456@teste.com",
+                                "senha": "123456789"
+                            }
+                        }
+                    }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Usuário autenticado",
+                "content": {
+                  "application/json": {
+                    "example": {
+                        "usuario": {
+                            "id": "4c8450e9-d58f-4629-95c0-cd1909d57ce8",
+                            "nome": "Larissa",
+                            "sobrenome": "Ferreira",
+                            "email": "teste3456@teste.com"
+                        },
+                        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjRjODQ1MGU5LWQ1OGYtNDYyOS05NWMwLWNkMTkwOWQ1N2NlOCIsImlhdCI6MTcwNjc0MDU3MywiZXhwIjoxNzA2ODI2OTczLCJzdWIiOiI0Yzg0NTBlOS1kNThmLTQ2MjktOTVjMC1jZDE5MDlkNTdjZTgifQ.8shKzckJ7NrXeQgH0JOSzYf4zYiOR0FKzwTR9oO1R8M"
+                    }
+                  }
+                }
+              },
+              "401": {
+                "description": "Credenciais inválidas",
+                "content": {
+                  "application/json": {
+                    "example": {
+                      "mensagem": "E-mail ou senha incorretos!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/projeto": {
+            "post": {
+              "summary": "Cadastrar projeto",
+              "security": [
+                {
+                  "BearerAuth": []
+                }
+              ],
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "multipart/form-data": {
+                    "schema": {
+                      "$ref": "#/components/schemas/Projeto"
+                    }
+                  }
+                }
+              },
+              "responses": {
+                "201": {
+                  "description": "Projeto cadastrado com sucesso!",
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                            "$ref": "#/components/schemas/Projeto"
+                          },
+                          "examples": {
+                            "example1": {
+                                "value": {
+
+                                    "titulo": "Tela de Login",
+                                    "tags": [
+                                        "Front-end",
+                                        "Html"
+                                    ],
+                                    "link": "http://localhost:3000/",
+                                    "descricao": "Meu projeto de tela de login.",
+                                    "foto": "https://storage.googleapis.com/upload-file-test-1/2a2b6c4c-7c45-431e-81a0-7a2805ee0f05_1706761227996_Captura de tela 2022-11-05 152019.png",
+                                    "usuario_id": "e0ba3c7e-56ed-4248-bc0a-da8a081350b1"
+
+                                }
+                            }
+                        }
+                      }
+                    }
+                },
+                "400": {
+                  "description": "Erro de validação",
+                  "content": {
+                    "application/json": {
+                      "example": {
+                        "mensagem": "Erro de validação",
+                        "detalhes": [
+                          "O campo título é obrigatório!",
+                          "O campo link é obrigatório!",
+                          "O campo foto é obrigatório!",
+                          "O campo usuario_id é obrigatório!"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "get": {
+                "summary": "Listar todos os projetos",
+                "security": [
+                    {
+                      "BearerAuth": []
+                    }
+                ],
+                "responses": {
+                  "200": {
+                    "description": "Lista de projetos",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Projeto"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "400": {
+                    "description": "Erro de validação",
+                    "content": {
+                      "application/json": {
+                        "example": {
+                          "mensagem": "Erro de validação",
+                          "detalhes": [
+                            "O campo título é obrigatório!",
+                            "O campo link é obrigatório!",
+                            "O campo foto é obrigatório!",
+                            "O campo usuario_id é obrigatório!"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+            }
+        },
+        "/projeto/{id}": {
+            "put": {
+                "summary": "Editar projeto",
+                "security": [
+                    {
+                      "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                  {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                      "type": "string"
+                    },
+                    "description": "ID do projeto a ser editado"
+                  }
+                ],
+                "requestBody": {
+                  "required": true,
+                  "content": {
+                    "multipart/form-data": {
+                      "schema": {
+                        "$ref": "#/components/schemas/Projeto"
+                      }
+                    }
+                  }
+                },
+                "responses": {
+                  "200": {
+                    "description": "Projeto editado com sucesso!",
+                        "content": {
+                        "application/json": {
+                            "schema": {
+                            "$ref": "#/components/schemas/Projeto"
+                            },
+                            "examples": {
+                                "example1": {
+                                    "value": {
+
+                                    "titulo": "Tela de Login",
+                                    "tags": [
+                                        "Front-end",
+                                        "Html"
+                                    ],
+                                    "link": "http://localhost:3000/",
+                                    "descricao": "Meu projeto de tela de login.",
+                                    "foto": "https://storage.googleapis.com/upload-file-test-1/2a2b6c4c-7c45-431e-81a0-7a2805ee0f05_1706761227996_Captura de tela 2022-11-05 152019.png",
+                                    "usuario_id": "e0ba3c7e-56ed-4248-bc0a-da8a081350b1"
+
+                                }
+                            }
+                        }
+
+                      }
+                    }
+                  },
+                  "400": {
+                    "description": "Erro de validação",
+                    "content": {
+                      "application/json": {
+                        "example": {
+                          "mensagem": "Erro de validação",
+                          "detalhes": [
+                            "O campo título é obrigatório!",
+                            "O campo link é obrigatório!",
+                            "O campo foto é obrigatório!",
+                            "O campo usuario_id é obrigatório!"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+            },
+            "delete": {
+                "summary": "Excluir projeto",
+                "security": [
+                    {
+                      "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                      "name": "id",
+                      "in": "path",
+                      "description": "ID do projeto",
+                      "required": true,
+                      "schema": {
+                        "type": "string"
+                      }
+                    }
+                  ],
+                "responses": {
+                  "204": {
+                    "description": "Projeto excluído com sucesso!"
+                  },
+                  "404": {
+                    "description": "Projeto não encontrado!"
+                  }
+                }
+            }
+        },
+        "/projeto/{usuario_id}": {
+            "get": {
+                "summary": "Listar projetos por usuário",
+                "security": [
+                    {
+                      "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                  {
+                    "name": "usuario_id",
+                    "in": "path",
+                    "description": "ID do usuário",
+                    "required": true,
+                    "schema": {
+                      "type": "string"
+                    }
+                  }
+                ],
+                "responses": {
+                  "200": {
+                    "description": "Lista de projetos do usuário",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Projeto"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "400": {
+                    "description": "Erro de validação",
+                    "content": {
+                      "application/json": {
+                        "example": {
+                          "mensagem": "Erro de validação",
+                          "detalhes": [
+                            "O campo usuário_id é obrigatório!"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+            }
+        }
+      },
+      "components": {
+        "schemas": {
+          "Usuario": {
+            "type": "object",
+            "properties": {
+              "nome": {
+                "type": "string"
+              },
+              "sobrenome": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string",
+                "format": "email"
+              },
+              "senha": {
+                "type": "string",
+                "minLength": 8,
+                "maxLength": 10,
+                "pattern": "^[^\\s]+$"
+              }
+            },
+            "required": ["nome", "sobrenome", "email", "senha"]
+          },
+          "LoginUsuario": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "format": "email"
+              },
+              "senha": {
+                "type": "string",
+                "minLength": 8,
+                "maxLength": 10,
+                "pattern": "^[^\\s]+$"
+              }
+            },
+            "required": ["email", "senha"]
+          },
+          "Projeto": {
+            "type": "object",
+            "properties": {
+              "titulo": {
+                "type": "string"
+              },
+              "tags": {
+                "type": "array",
+                "items": {
+                    "type":"string"
+                },
+                "collectionFormat": "multi"
+              },
+              "link": {
+                "type": "string"
+              },
+              "descricao": {
+                "type": "string"
+              },
+              "foto": {
+                "type": "string",
+                "format": "binary"
+              },
+              "usuario_id": {
+                "type": "string"
+              }
+            },
+            "required": ["titulo", "link", "foto", "usuario_id"]
+          }
+        },
+        "securitySchemes": {
+            "BearerAuth": {
+              "type": "http",
+              "scheme": "bearer",
+              "bearerFormat": "JWT"
+            }
+        }
+    }
+
+}
